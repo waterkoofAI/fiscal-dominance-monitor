@@ -1,0 +1,8 @@
+# Generated artefacts. Marking them -merge stops git attempting a line-by-line
+# merge and littering the JSON with conflict markers when the daily bot and a
+# local run both touch them; you resolve by picking a side and regenerating with
+#   python3 -m engine.run --no-refresh
+# linguist-generated keeps them out of the language stats and collapses them in
+# GitHub diffs.
+docs/data/*.json   -merge -diff linguist-generated=true
+data/cache/*.csv   -merge -diff linguist-generated=true
