@@ -60,7 +60,21 @@ jobs:
           git add docs/data data/cache
           if git diff --staged --quiet; then
             echo "no changes"
-          else
-            git commit -m "data: $(date -u +%Y-%m-%d) macro update [skip ci]"
-            git push
+            exit 0
           fi
+          git commit -m "data: $(date -u +%Y-%m-%d) macro update [skip ci]"
+          # Two runs can overlap (a manual dispatch landing on top of the
+          # scheduled one), and the loser's push is rejected as non-fast-forward
+          # because its checkout predates the winner's commit. Rebase and retry
+          # rather than failing the run.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "push rejected, rebasing (attempt $attempt)"
+            git pull --rebase --autostash origin main || true
+            sleep $((attempt * 3))
+          done
+          echo "::error::could not push after 5 attempts"
+          exit 1
