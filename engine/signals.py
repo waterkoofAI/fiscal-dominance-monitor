@@ -130,3 +130,77 @@ def btc_upgrade_checklist(f: dict, sc: dict, current: str) -> dict:
         "note": f"{done}/{len(items)} 项已满足"
                 + ("（全部满足 ≠ 自动加仓，仍由你自己拍板）" if done == len(items) else ""),
     }
+
+
+# ------------------------------------------------------ posture & trend ----
+# Posture is about EXPOSURE to the named asset, derived from the signal level.
+# It is still a risk-posture label, not an order: there is no size, no price and
+# no timing here, and there never will be in this codebase.
+POSTURE = {
+    5: ("增持",     "Increase",   "↑↑"),
+    4: ("逐步增持", "Gradual add", "↑"),
+    3: ("维持",     "Hold",       "→"),
+    2: ("降低风险", "De-risk",    "↓"),
+    1: ("减持",     "Reduce",     "↓"),
+    0: ("大幅减持", "Cut",        "↓↓"),
+}
+
+
+def posture(idx: int) -> dict:
+    cn, en, arrow = POSTURE[max(0, min(5, idx))]
+    return {"action_cn": cn, "action_en": en, "arrow": arrow}
+
+
+def trajectory(history: list[dict | None], asset: str) -> dict:
+    """
+    Signal now vs 5 / 20 / 60 trading days ago.
+
+    This is the honest substitute for a forecast. The engine cannot tell you
+    where BTC is going, but it can tell you whether the macro case for BTC has
+    been strengthening or weakening, and for how long — which is the question
+    you can actually act on.
+    """
+    def at(n: int) -> str | None:
+        if len(history) <= n or history[-1 - n] is None:
+            return None
+        return history[-1 - n][asset]["signal"]
+
+    now = at(0)
+    out = {"now": now, "now_cn": CN.get(now or "", "—")}
+    for tag, n in (("d5", 5), ("d20", 20), ("d60", 60)):
+        prev = at(n)
+        if prev is None or now is None:
+            out[tag] = None
+            continue
+        di = LEVELS.index(now) - LEVELS.index(prev)
+        out[tag] = {"prev": prev, "prev_cn": CN[prev], "delta": di,
+                    "arrow": "↑" if di > 0 else ("↓" if di < 0 else "→")}
+
+    # how long has the current label held
+    streak = 0
+    for h in reversed(history):
+        if h is None or h[asset]["signal"] != now:
+            break
+        streak += 1
+    out["days_held"] = streak
+
+    # Summarise on the 20-day view, but never say "no change" while a shorter
+    # window disagrees — a flat 20d with a +1 five-day move is a recent turn,
+    # not a quiet stretch, and printing "无变化" next to a "5日 ↑+1" chip is
+    # simply wrong.
+    d5, d20 = out.get("d5"), out.get("d20")
+    if d20 is None and d5 is None:
+        out["summary_cn"] = "历史不足，无法判断趋势"
+    elif d20 and d20["delta"] > 0:
+        out["summary_cn"] = (f"过去20个交易日从「{d20['prev_cn']}」上调至"
+                             f"「{out['now_cn']}」，宏观理由在增强")
+    elif d20 and d20["delta"] < 0:
+        out["summary_cn"] = (f"过去20个交易日从「{d20['prev_cn']}」下调至"
+                             f"「{out['now_cn']}」，宏观理由在减弱")
+    elif d5 and d5["delta"] != 0:
+        word = "上调" if d5["delta"] > 0 else "下调"
+        out["summary_cn"] = (f"近5个交易日从「{d5['prev_cn']}」{word}至"
+                             f"「{out['now_cn']}」（20日净持平），刚出现转向")
+    else:
+        out["summary_cn"] = f"已在「{out['now_cn']}」维持 {streak} 个交易日，无变化"
+    return out

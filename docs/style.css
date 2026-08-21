@@ -167,3 +167,48 @@ nav button.on{color:var(--tx)}
 .warn{background:rgba(229,72,77,.09);border:1px solid rgba(229,72,77,.28);
   border-radius:10px;padding:11px 13px;font-size:12.5px;color:#ffb4b6;line-height:1.6;margin-bottom:12px}
 .loading{text-align:center;padding:70px 20px;color:var(--tx3);font-family:var(--mono);font-size:13px}
+
+/* ---------- strategy / posture ---------- */
+.strat{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.strat:last-of-type{border-bottom:0}
+.strat .e{font-size:17px;width:20px;flex:none;text-align:center}
+.strat .nm{font-size:15px;font-weight:600;width:70px;flex:none}
+.strat .sg{font-size:13px;font-weight:600;width:58px;flex:none}
+.strat .act{font-size:15px;font-weight:700;margin-left:auto;text-align:right;
+  white-space:nowrap;font-family:var(--sans)}
+.strat .act small{display:block;font-size:10.5px;font-weight:400;color:var(--tx3);margin-top:1px}
+.act-up{color:var(--g)} .act-hold{color:var(--tx2)} .act-down{color:var(--r)}
+.traj{font-size:11.5px;color:var(--tx3);padding:0 0 10px 30px;line-height:1.5;
+  border-bottom:1px solid var(--line);margin-top:-4px}
+.traj:last-child{border-bottom:0}
+.traj b{color:var(--tx2);font-weight:600}
+.traj .chip{display:inline-block;font-family:var(--mono);font-size:10px;
+  background:var(--bg2);padding:1px 6px;border-radius:4px;margin-right:5px;color:var(--tx2)}
+
+/* ---------- scenarios ---------- */
+.scen{padding:10px 0;border-bottom:1px solid var(--line)}
+.scen:last-of-type{border-bottom:0}
+.scen .top{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.scen .nm{font-size:14px;font-weight:600;flex:1}
+.scen .pc{font-family:var(--mono);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.scen .bar{height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.scen .bar>i{display:block;height:100%;border-radius:99px;transition:width .5s}
+.scen .conds{margin-top:7px;display:none}
+.scen.open .conds{display:block}
+.scen .cond{display:flex;gap:7px;align-items:center;font-size:11px;
+  color:var(--tx3);padding:2.5px 0;font-family:var(--mono)}
+.scen .cond .cb{width:36px;height:4px;background:var(--bg2);border-radius:99px;
+  overflow:hidden;flex:none}
+.scen .cond .cb>i{display:block;height:100%;background:var(--tx2);border-radius:99px}
+.scen .toggle{font-size:10.5px;color:var(--b);cursor:pointer;margin-top:4px;
+  font-family:var(--mono);user-select:none}
+
+/* ---------- nearest triggers ---------- */
+.trig{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);
+  border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.trig .th{font-size:11px;color:var(--tx3);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:7px}
+.trig .row{display:flex;gap:9px;align-items:baseline;padding:4px 0;font-size:13px}
+.trig .row b{font-family:var(--mono);color:#8ab4f8;font-weight:600;
+  margin-left:auto;white-space:nowrap;font-size:12px}
+.trig .row.compound b{color:var(--tx3)}

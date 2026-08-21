@@ -12,7 +12,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from engine import breakers, config, features, policy, scores, signals, stages
+from engine import (breakers, config, features, policy, scenarios,
+                    scores, signals, stages)
 from engine.features import Panel
 
 
@@ -259,6 +260,90 @@ class TestNetLiquidity(unittest.TestCase):
         self.assertIsNotNone(nl)
         self.assertAlmostEqual(nl / 1e6, 5.79, places=1,
                                msg="net liquidity should land near $5.8T, not $5.8bn or $5,800T")
+
+
+class TestScenarios(unittest.TestCase):
+    def test_weights_sum_to_100(self):
+        f = {"cpi_yoy": 3.0, "cpi_yoy_trend_3m": 0.1, "DFII10_level": 1.5,
+             "DFII10_chg_60d": -0.2, "DGS30_chg_60d": 0.1, "DGS30_level": 5.0,
+             "THREEFYTP10_level": 0.8, "THREEFYTP10_chg_60d": 0.1,
+             "dxy_chg_60d": -2.0, "GOLD_ret_60d": 5.0,
+             "BAMLH0A0HYM2_level": 3.0, "BAMLH0A0HYM2_chg_60d": 0.0,
+             "walcl_chg_60d_pct": 0.5}
+        sc = {"fiscal_stress": {"score": 50}, "financial_repression": {"score": 50}}
+        out = scenarios.compute(f, sc, {"fiscal_intervention_score": 0.0,
+                                        "repression_score": 0.0, "stage4_facts": []})
+        self.assertAlmostEqual(sum(out["weights"].values()), 100.0, places=0)
+        self.assertEqual(len(out["ranked"]), 5)
+
+    def test_missing_data_is_neutral_not_zero(self):
+        """Absent inputs must read as 0.5, never silently as 0."""
+        self.assertEqual(scenarios._sat(None, 0, 1), 0.5)
+
+    def test_qe_scenario_needs_a_policy_fact(self):
+        f = {"walcl_chg_60d_pct": 20.0, "DFII10_chg_60d": -0.5}
+        sc = {"fiscal_stress": {"score": 50}, "financial_repression": {"score": 90}}
+        no_fact = scenarios.compute(f, sc, {"fiscal_intervention_score": 0.0,
+                                            "repression_score": 0.0, "stage4_facts": []})
+        with_fact = scenarios.compute(f, sc, {"fiscal_intervention_score": 0.0,
+                                              "repression_score": 0.0,
+                                              "stage4_facts": [{"title": "QE"}]})
+        self.assertGreater(with_fact["weights"]["qe_ycc"], no_fact["weights"]["qe_ycc"])
+
+
+class TestPostureAndTrajectory(unittest.TestCase):
+    def test_posture_covers_every_signal_level(self):
+        for i in range(len(config.SIGNAL_LEVELS)):
+            self.assertIn("action_cn", signals.posture(i))
+
+    def test_posture_direction_matches_level(self):
+        self.assertEqual(signals.posture(5)["arrow"], "↑↑")
+        self.assertEqual(signals.posture(3)["arrow"], "→")
+        self.assertEqual(signals.posture(0)["arrow"], "↓↓")
+
+    def _hist(self, levels):
+        return [{"btc": {"signal": lv, "index": config.SIGNAL_LEVELS.index(lv)}}
+                for lv in levels]
+
+    def test_trajectory_reports_upgrade(self):
+        h = self._hist(["Caution"] * 25 + ["Bullish"] * 1)
+        t = signals.trajectory(h, "btc")
+        self.assertEqual(t["now"], "Bullish")
+        self.assertGreater(t["d20"]["delta"], 0)
+        self.assertIn("增强", t["summary_cn"])
+
+    def test_trajectory_never_says_flat_while_5d_moved(self):
+        """A flat 20d with a live 5d move must not print 无变化."""
+        h = self._hist(["Neutral"] * 20 + ["Caution"] * 3 + ["Neutral"] * 3)
+        t = signals.trajectory(h, "btc")
+        self.assertEqual(t["d20"]["delta"], 0)
+        self.assertNotEqual(t["d5"]["delta"], 0)
+        self.assertNotIn("无变化", t["summary_cn"])
+
+
+class TestNearestTriggers(unittest.TestCase):
+    def test_no_bogus_gap_on_compound_gate(self):
+        """CPI already past 2.5 must not report 还差 X% just because the gate failed."""
+        cl = {"items": [{"key": "inflation_sticky", "label_cn": "通胀顽固",
+                         "passed": False, "actual": 3.54, "threshold": 2.5,
+                         "direction": ">=", "unit": "%"}]}
+        out = stages.nearest_triggers(cl)
+        self.assertTrue(out[0]["primary_met"])
+        self.assertIsNone(out[0]["need"])
+        self.assertNotIn("还差", out[0]["need_cn"])
+
+    def test_real_gap_is_reported(self):
+        cl = {"items": [{"key": "fs", "label_cn": "财政压力分", "passed": False,
+                         "actual": 41.6, "threshold": 55.0, "direction": ">=",
+                         "unit": "pt"}]}
+        out = stages.nearest_triggers(cl)
+        self.assertFalse(out[0]["primary_met"])
+        self.assertAlmostEqual(out[0]["need"], 13.4, places=1)
+
+    def test_passed_gates_excluded(self):
+        cl = {"items": [{"key": "x", "label_cn": "ok", "passed": True, "actual": 9,
+                         "threshold": 1, "direction": ">=", "unit": "pt"}]}
+        self.assertEqual(stages.nearest_triggers(cl), [])
 
 
 if __name__ == "__main__":

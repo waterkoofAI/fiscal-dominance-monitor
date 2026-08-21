@@ -15,7 +15,8 @@ import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from . import breakers, config, features, narrative, policy, scores, signals, sources
+from . import (breakers, config, features, narrative, policy, scenarios,
+               scores, signals, sources)
 from .features import Panel
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -111,13 +112,27 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         if i % 250 == 0 and i:
             print(f"  ... {i}/{len(eval_dates)}")
 
-    from .stages import apply_hysteresis, next_stage_checklist, stage_stability
+    from .stages import (apply_hysteresis, nearest_triggers,
+                         next_stage_checklist, stage_stability)
     raw_seq = [d["raw_stage"] for d in days]
     fs_seq = [d["scores"]["fiscal_stress"]["score"] for d in days]
     fr_seq = [d["scores"]["financial_repression"]["score"] for d in days]
     conf_seq = apply_hysteresis(raw_seq, fs_seq, fr_seq)
     for d, s in zip(days, conf_seq):
         d["stage"] = s
+
+    # Second pass. Signals depend on the POST-hysteresis stage, so they cannot
+    # be produced inside the first loop. Doing it here gives us a per-day signal
+    # history, which is what the trajectory ("is the macro case strengthening
+    # or weakening?") is computed from.
+    sig_history: list[dict | None] = []
+    for d in days:
+        try:
+            b = breakers.evaluate(d["features"], d["scores"])
+            sig_history.append(signals.compute(d["stage"], d["scores"],
+                                               d["features"], b))
+        except Exception:                                   # noqa: BLE001
+            sig_history.append(None)
 
     last = days[-1]
     prev_sc = days[-2]["scores"] if len(days) > 1 else None
@@ -127,6 +142,11 @@ def run(refresh: bool = True, backtest_days: int | None = None,
     sig = signals.compute(last["stage"], last["scores"], last["features"], brk)
     btc_check = signals.btc_upgrade_checklist(last["features"], last["scores"],
                                               sig["btc"]["signal"])
+    for k in sig:
+        sig[k]["posture"] = signals.posture(sig[k]["index"])
+        sig[k]["trajectory"] = signals.trajectory(sig_history, k)
+    scen = scenarios.compute(last["features"], last["scores"], last["policy"])
+    triggers = nearest_triggers(checklist)
     conf = _confidence(last["features"], p, last["date"])
     narr = narrative.build(last["date"], last["stage"], last["scores"],
                            last["features"], brk, stab, checklist, sig,
@@ -156,6 +176,8 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         "signals": sig,
         "btc_checklist": btc_check,
         "next_stage": checklist,
+        "nearest_triggers": triggers,
+        "scenarios": scen,
         "breakers": brk,
         "stability": stab,
         "confidence": conf,
@@ -196,6 +218,8 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         "GOLD": [d["features"].get("GOLD_level") for d in days],
         "BTC": [d["features"].get("BTC_level") for d in days],
         "BTC_GOLD": [d["features"].get("btc_gold_ratio") for d in days],
+        "sig_gold": [h["gold"]["index"] if h else None for h in sig_history],
+        "sig_btc": [h["btc"]["index"] if h else None for h in sig_history],
     }
 
     out_dir.mkdir(parents=True, exist_ok=True)

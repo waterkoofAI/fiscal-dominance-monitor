@@ -30,9 +30,21 @@ class Gate:
     actual: float | None
     target: str
     detail: str = ""
+    # Numeric threshold + comparison direction, so the UI can answer
+    # "how far away is this?" instead of only "pass/fail".
+    threshold: float | None = None
+    direction: str = ""          # ">=" | "<=" | ">" | "<"
+    unit: str = ""               # "bp" | "%" | "pt"
+
+    def gap(self) -> float | None:
+        if self.actual is None or self.threshold is None:
+            return None
+        return self.actual - self.threshold
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        d = asdict(self)
+        d["gap"] = self.gap()
+        return d
 
 
 # ------------------------------------------------------------ gate defs ----
@@ -44,35 +56,35 @@ def stage3_gates(f: dict, sc: dict) -> list[Gate]:
     g.append(Gate("inflation_not_falling", "通胀未在下行",
                   None if ct is None else ct >= -0.15, ct,
                   "CPI YoY 3个月变化 ≥ -0.15pp",
-                  "" if ct is None else f"实际 {ct:+.2f}pp"))
+                  "" if ct is None else f"实际 {ct:+.2f}pp", -0.15, ">=", "pp"))
 
     rt = f.get("DFII10_chg_60d")
     g.append(Gate("real_yield_falling", "实际利率下行",
                   None if rt is None else rt < -0.10, rt,
                   "10Y 实际利率 60日变化 < -10bp",
-                  "" if rt is None else f"实际 {rt*100:+.0f}bp"))
+                  "" if rt is None else f"实际 {rt*100:+.0f}bp", -0.10, "<", "bp"))
 
     dx = f.get("dxy_chg_60d")
     g.append(Gate("dollar_not_rising", "美元未走强",
                   None if dx is None else dx <= 1.0, dx,
                   "美元 60日 ≤ +1.0%",
-                  "" if dx is None else f"实际 {dx:+.1f}%"))
+                  "" if dx is None else f"实际 {dx:+.1f}%", 1.0, "<=", "%"))
 
     gr = f.get("GOLD_ret_60d")
     g.append(Gate("gold_rising", "黄金上行",
                   None if gr is None else gr > 0, gr,
                   "黄金 60日 > 0%",
-                  "" if gr is None else f"实际 {gr:+.1f}%"))
+                  "" if gr is None else f"实际 {gr:+.1f}%", 0.0, ">", "%"))
 
     c30 = f.get("DGS30_chg_60d")
     g.append(Gate("long_end_not_spiraling", "长端未失控上行",
                   None if c30 is None else c30 < 0.60, c30,
                   "30Y 60日变化 < +60bp",
-                  "" if c30 is None else f"实际 {c30*100:+.0f}bp"))
+                  "" if c30 is None else f"实际 {c30*100:+.0f}bp", 0.60, "<", "bp"))
 
     fr = sc["financial_repression"]["score"]
     g.append(Gate("repression_score", "金融压抑分 ≥ 65", fr >= 65, fr,
-                  "Financial Repression ≥ 65", f"实际 {fr:.1f}"))
+                  "Financial Repression ≥ 65", f"实际 {fr:.1f}", 65.0, ">=", "pt"))
     return g
 
 
@@ -85,30 +97,31 @@ def stage2_conditions(f: dict, sc: dict, policy: dict) -> list[Gate]:
     g.append(Gate("long_end_elevated", "长端处于高位", ok, lv,
                   "30Y ≥ 5.0% 或 3年百分位 ≥ 70",
                   f"30Y {lv:.2f}%" + (f" / {pc:.0f}th" if pc is not None else "")
-                  if lv is not None else ""))
+                  if lv is not None else "", 5.0, ">=", "%"))
 
     pi = policy.get("fiscal_intervention_score", 0.0)
     g.append(Gate("treasury_intervention", "财政部/联储有干预动作", pi > 0, pi,
-                  "政策台账干预分 > 0", policy.get("fiscal_intervention_note", "无记录")))
+                  "政策台账干预分 > 0", policy.get("fiscal_intervention_note", "无记录"),
+                  0.0, ">", "pt"))
 
     cy, ctr = f.get("cpi_yoy"), f.get("cpi_yoy_trend_3m")
     ok = None if cy is None else (cy >= 2.5 and (ctr is None or ctr >= -0.4))
     g.append(Gate("inflation_sticky", "通胀顽固", ok, cy,
                   "CPI YoY ≥ 2.5% 且未快速回落",
                   f"CPI {cy:.1f}%" + (f", 3м趋势 {ctr:+.2f}pp" if ctr is not None else "")
-                  if cy is not None else ""))
+                  if cy is not None else "", 2.5, ">=", "%"))
 
     tp = f.get("THREEFYTP10_level")
     g.append(Gate("term_premium_elevated", "期限溢价抬升",
                   None if tp is None else tp >= 0.50, tp,
                   "10Y 期限溢价 ≥ 0.50%",
-                  f"实际 {tp:+.2f}%" if tp is not None else ""))
+                  f"实际 {tp:+.2f}%" if tp is not None else "", 0.50, ">=", "%"))
 
     dx = f.get("dxy_chg_60d")
     g.append(Gate("dollar_weakening", "美元走弱",
                   None if dx is None else dx < 0, dx,
                   "美元 60日 < 0%",
-                  f"实际 {dx:+.1f}%" if dx is not None else ""))
+                  f"实际 {dx:+.1f}%" if dx is not None else "", 0.0, "<", "%"))
     return g
 
 
@@ -256,7 +269,9 @@ def next_stage_checklist(stage: int, detail: dict) -> dict:
     req = detail["stage2_required"]
     fs_gate = {"key": "fiscal_stress_min", "label_cn": "财政压力分 ≥ 55",
                "passed": detail["fiscal_stress"] >= 55, "actual": detail["fiscal_stress"],
-               "target": "Fiscal Stress ≥ 55", "detail": f"实际 {detail['fiscal_stress']:.1f}"}
+               "target": "Fiscal Stress ≥ 55", "detail": f"实际 {detail['fiscal_stress']:.1f}",
+               "threshold": 55.0, "direction": ">=", "unit": "pt",
+               "gap": detail["fiscal_stress"] - 55.0}
     fs_ok = detail["fiscal_stress"] >= 55
     blocking = []
     if not fs_ok:
@@ -269,3 +284,56 @@ def next_stage_checklist(stage: int, detail: dict) -> dict:
     return {"target": 2, "target_name": config.STAGE_DEFS[2]["name_cn"],
             "items": [fs_gate] + items, "done": done, "total": req,
             "note": note}
+
+
+def nearest_triggers(checklist: dict, limit: int = 3) -> list[dict]:
+    """
+    The unmet conditions closest to flipping, with the numeric distance.
+
+    This is the "还差多少" answer: not "you need 4 more things", but
+    "30Y needs another 31bp and the dollar needs to turn".
+
+    Careful with compound gates. "通胀顽固" needs CPI >= 2.5% AND inflation not
+    collapsing; if CPI is already 3.5% the gate can still fail on its second
+    half, and naively reporting |actual - threshold| would print a confident
+    "还差 1.04%" that is simply false. When the primary threshold is already
+    satisfied we say so instead of inventing a number.
+    """
+    SCALE = {"bp": 0.10, "pp": 0.30, "%": 1.0, "pt": 10.0}
+    CMP = {">=": lambda a, t: a >= t, ">": lambda a, t: a > t,
+           "<=": lambda a, t: a <= t, "<": lambda a, t: a < t}
+
+    out = []
+    for it in checklist.get("items", []):
+        if it.get("passed") is True:
+            continue
+        thr, act = it.get("threshold"), it.get("actual")
+        direction = it.get("direction", "")
+        if thr is None or act is None or direction not in CMP:
+            continue
+        unit = it.get("unit", "")
+        row = {"key": it.get("key"), "label_cn": it.get("label_cn"),
+               "unit": unit, "direction": direction,
+               "actual": act, "threshold": thr}
+
+        if CMP[direction](act, thr):
+            # primary threshold already met — the gate fails on another clause
+            row.update(need=None, distance=1e6, primary_met=True,
+                       need_cn="主阈值已满足，卡在该条件的另一半")
+        else:
+            need = abs(act - thr)
+            if need < 1e-9:
+                row.update(need=0.0, distance=0.0, primary_met=False,
+                           need_cn="就差一点（需严格超过阈值）")
+            else:
+                row.update(
+                    need=need, distance=need / SCALE.get(unit, 1.0),
+                    primary_met=False,
+                    need_cn=(f"还差 {need*100:.0f}bp" if unit == "bp"
+                             else f"还差 {need:.2f}pp" if unit == "pp"
+                             else f"还差 {need:.1f} 分" if unit == "pt"
+                             else f"还差 {need:.2f}%"))
+        out.append(row)
+
+    out.sort(key=lambda x: x["distance"])
+    return out[:limit]

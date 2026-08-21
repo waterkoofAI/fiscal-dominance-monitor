@@ -138,7 +138,7 @@ function renderScores(d) {
   $('#scores').replaceChildren(box);
 }
 
-function renderSignals(d) {
+function renderSignals(d, target) {
   const order = [['gold','黄金'],['btc','BTC'],['ust30','30Y 美债'],['usd','美元']];
   const box = el('div');
   order.forEach(([k,label]) => {
@@ -150,13 +150,15 @@ function renderSignals(d) {
       <span class="r">${s.reason}</span>`;
     box.appendChild(r);
   });
-  $('#signals').replaceChildren(box);
+  const t = document.querySelector(target || '#signals');
+  if (t) t.replaceChildren(box);
 }
 
-function renderChecklist(target, data, titleEl, titleTxt) {
+function renderChecklist(target, data, titleEl, titleTxt, extra) {
   const box = el('div');
   if (titleEl) $(titleEl).innerHTML = titleTxt;
   box.appendChild(el('div','prog', data.note || ''));
+  if (extra) box.appendChild(extra);
   (data.items||[]).forEach(it => {
     const r = el('div','chk ' + chkCls(it.passed));
     r.innerHTML = `<div class="box">${chkBox(it.passed)}</div>
@@ -183,6 +185,80 @@ function renderBreakers(d) {
     box.appendChild(r);
   });
   $('#breakers').replaceChildren(box);
+}
+
+function renderStrategy(d) {
+  const order = [['gold','黄金'],['btc','BTC'],['ust30','30Y 美债'],['usd','美元']];
+  const box = el('div');
+  const note = (d.narrative.strategy && d.narrative.strategy[0])
+    ? d.narrative.strategy[0].stage_note : '';
+  if (note) box.appendChild(el('div','prog', note));
+
+  order.forEach(([k,label]) => {
+    const s = d.signals[k]; if (!s) return;
+    const p = s.posture || {};
+    const cls = p.arrow==='→' ? 'act-hold' : (p.arrow && p.arrow[0]==='↑' ? 'act-up' : 'act-down');
+    const r = el('div','strat');
+    r.innerHTML = `<span class="e">${s.emoji}</span>
+      <span class="nm">${label}</span>
+      <span class="sg ${CLS(s.signal)}">${s.signal_cn}</span>
+      <span class="act ${cls}">${p.arrow||''} ${p.action_cn||'—'}
+        <small>${p.action_en||''}</small></span>`;
+    box.appendChild(r);
+
+    const t = s.trajectory;
+    if (t) {
+      const chips = ['d5','d20','d60'].map(tag => {
+        const x = t[tag];
+        if (!x) return '';
+        const n = tag==='d5'?'5日':(tag==='d20'?'20日':'60日');
+        return `<span class="chip">${n} ${x.arrow}${x.delta?(x.delta>0?'+':'')+x.delta:''}</span>`;
+      }).join('');
+      box.appendChild(el('div','traj', `${chips}${t.summary_cn||''}`));
+    }
+  });
+
+  box.appendChild(el('div','note',
+    '这些是<b>风险姿态标签</b>，不是交易指令：没有仓位大小、没有价位、没有时点。'
+    + '一次数据修正或 API 异常应该能改变一个标签，但绝不该改变一个仓位。<br>'
+    + '「未来走势」本工具不提供——回测中该框架对金/BTC 未表现出前瞻预测力，'
+    + '详见仓库 ASSESSMENT.md 第 3 节。它能告诉你的是：<b>宏观理由正在增强还是减弱</b>。'));
+  $('#strategy').replaceChildren(box);
+}
+
+function renderScenarios(d) {
+  const sc = d.scenarios; if (!sc) return;
+  const box = el('div');
+  box.appendChild(el('div','prog',
+    `当前权重最高：<b>${sc.leader_cn}</b>。点各条可展开构成条件。`));
+
+  sc.ranked.forEach(r => {
+    const n = el('div','scen');
+    n.innerHTML = `<div class="top"><span class="nm">${r.name_cn}</span>
+        <span class="pc" style="color:${r.color}">${r.pct.toFixed(1)}%</span></div>
+      <div class="bar"><i style="width:${Math.max(1,r.pct)}%;background:${r.color}"></i></div>
+      <div class="toggle">展开构成 ▾</div>
+      <div class="conds">${r.conditions.map(c =>
+        `<div class="cond"><span class="cb"><i style="width:${Math.round(c.value*100)}%"></i></span>
+         <span style="flex:1">${c.label_cn}</span><span>${c.detail}</span></div>`).join('')}</div>`;
+    n.querySelector('.toggle').addEventListener('click', e => {
+      n.classList.toggle('open');
+      e.target.textContent = n.classList.contains('open') ? '收起 ▴' : '展开构成 ▾';
+    });
+    box.appendChild(n);
+  });
+  box.appendChild(el('div','note', sc.note));
+  $('#scenarios').replaceChildren(box);
+}
+
+function renderTriggers(d) {
+  const t = d.nearest_triggers || [];
+  if (!t.length) return null;
+  const n = el('div','trig');
+  n.innerHTML = `<div class="th">最近的触发点</div>` + t.map(x =>
+    `<div class="row ${x.primary_met?'compound':''}">
+       <span>${x.label_cn}</span><b>${x.need_cn}</b></div>`).join('');
+  return n;
 }
 
 function renderMetrics(d) {
@@ -370,11 +446,13 @@ async function load() {
     ? [el('div','', '<div style="color:var(--tx3);margin-bottom:4px">较昨日变动最大的分项</div>'),
        ...mv.map(m=>el('div','',`<div>${m}</div>`))]
     : []));
+  renderStrategy(d);
+  renderScenarios(d);
   renderDC(d);
   renderScores(d);
-  renderSignals(d);
   renderChecklist('#nextstage', d.next_stage, '#nsTitle',
-    `距离 Stage ${d.next_stage.target ?? '—'} · ${d.next_stage.target_name||''}`);
+    `距离 Stage ${d.next_stage.target ?? '—'} · ${d.next_stage.target_name||''}`,
+    renderTriggers(d));
   renderChecklist('#btcchk', d.btc_checklist);
   renderBreakers(d);
   renderMetrics(d);
