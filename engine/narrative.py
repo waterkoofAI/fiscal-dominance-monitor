@@ -114,7 +114,8 @@ def verdict(stage: int, sc: dict, f: dict, brk: dict, stab: dict,
 
     drv = f.get("decomp_driver")
     if drv and drv in DRIVER_CN:
-        parts.append(f"长端归因：{DRIVER_CN[drv]}。")
+        # some labels already end in a full stop; do not double it up
+        parts.append("长端归因：" + DRIVER_CN[drv].rstrip("。") + "。")
 
     if checklist.get("target"):
         parts.append(f"距离 Stage {checklist['target']}（{checklist['target_name']}）："
