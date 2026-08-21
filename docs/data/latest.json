@@ -1,0 +1,1009 @@
+{
+ "generated_at": "2026-08-21T08:28:25.362388+00:00",
+ "as_of": "2026-08-21",
+ "stage": 1,
+ "stage_raw": 1,
+ "stage_name": "Fiscal Stress",
+ "stage_name_cn": "财政压力",
+ "stage_color": "#d4a72c",
+ "stage_defs": {
+  "0": {
+   "name": "Normal Regime",
+   "name_cn": "常态",
+   "color": "#2ea043"
+  },
+  "1": {
+   "name": "Fiscal Stress",
+   "name_cn": "财政压力",
+   "color": "#d4a72c"
+  },
+  "2": {
+   "name": "Fiscal Dominance Watch",
+   "name_cn": "财政主导观察",
+   "color": "#e8873a"
+  },
+  "3": {
+   "name": "Financial Repression",
+   "name_cn": "金融压抑",
+   "color": "#e5484d"
+  },
+  "4": {
+   "name": "QE / YCC Regime Shift",
+   "name_cn": "货币体制转换",
+   "color": "#a457e8"
+  }
+ },
+ "composite": 32.0,
+ "driver_composite": 17.7,
+ "confirmation_composite": 54.0,
+ "scores": {
+  "fiscal_stress": {
+   "score": 41.6,
+   "driver_score": 41.6,
+   "confirmation_score": null,
+   "coverage_pct": 100.0,
+   "components": {
+    "level_30y": {
+     "points": 9.6,
+     "max": 18.0,
+     "note": "30Y at 5.19%",
+     "missing": false,
+     "kind": "driver"
+    },
+    "pctile_30y": {
+     "points": 12.0,
+     "max": 12.0,
+     "note": "30Y in 98th pctile of last 3y",
+     "missing": false,
+     "kind": "driver"
+    },
+    "chg_30y_20d": {
+     "points": 3.05,
+     "max": 12.0,
+     "note": "30Y +4bp over 20d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "term_premium_level": {
+     "points": 8.0,
+     "max": 16.0,
+     "note": "10Y term premium +0.84%",
+     "missing": false,
+     "kind": "driver"
+    },
+    "term_premium_chg_60d": {
+     "points": 2.18,
+     "max": 12.0,
+     "note": "term premium -2bp over 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "curve_stress": {
+     "points": 1.24,
+     "max": 8.0,
+     "note": "30Y-3M steepened -6bp in 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "debt_gdp": {
+     "points": 5.52,
+     "max": 8.0,
+     "note": "federal debt/GDP 123%",
+     "missing": false,
+     "kind": "driver"
+    },
+    "policy_intervention": {
+     "points": 0.0,
+     "max": 14.0,
+     "note": "近期无记录",
+     "missing": false,
+     "kind": "driver"
+    }
+   }
+  },
+  "financial_repression": {
+   "score": 6.0,
+   "driver_score": 2.6,
+   "confirmation_score": 31.1,
+   "coverage_pct": 100.0,
+   "components": {
+    "real_yield_level": {
+     "points": 0.0,
+     "max": 18.0,
+     "note": "10Y real yield +2.35%",
+     "missing": false,
+     "kind": "driver"
+    },
+    "real_yield_trend_60d": {
+     "points": 0.23,
+     "max": 18.0,
+     "note": "real yield +19bp over 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "infl_realyield_divergence": {
+     "points": 0.0,
+     "max": 22.0,
+     "note": "CPI YoY trend -0.41pp & real yield +19bp/60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "long_end_capped": {
+     "points": 2.03,
+     "max": 16.0,
+     "note": "30Y +12bp over 60d [财政压力门 ×0.39]",
+     "missing": false,
+     "kind": "driver"
+    },
+    "policy_repression": {
+     "points": 0.0,
+     "max": 14.0,
+     "note": "近期无记录",
+     "missing": false,
+     "kind": "driver"
+    },
+    "dollar_debase": {
+     "points": 3.73,
+     "max": 12.0,
+     "note": "dollar -0.5% over 60d",
+     "missing": false,
+     "kind": "confirmation"
+    }
+   }
+  },
+  "debasement": {
+   "score": 39.0,
+   "driver_score": 20.9,
+   "confirmation_score": 46.0,
+   "coverage_pct": 100.0,
+   "components": {
+    "dxy_trend": {
+     "points": 4.97,
+     "max": 18.0,
+     "note": "dollar -0.5% / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "gold_trend": {
+     "points": 6.64,
+     "max": 20.0,
+     "note": "gold +4.0% / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "gold_ath_proximity": {
+     "points": 2.75,
+     "max": 10.0,
+     "note": "gold -13.1% from ATH",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "btc_trend": {
+     "points": 8.74,
+     "max": 14.0,
+     "note": "BTC +20.5% / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "infl_expectations": {
+     "points": 5.85,
+     "max": 16.0,
+     "note": "5y5y forward 2.34%, +7bp/60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "real_yield_support": {
+     "points": 0.0,
+     "max": 12.0,
+     "note": "real yield +19bp / 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "gold_vs_dxy_coherence": {
+     "points": 10.0,
+     "max": 10.0,
+     "note": "gold up / dollar down (coherent)",
+     "missing": false,
+     "kind": "confirmation"
+    }
+   }
+  },
+  "btc_liquidity": {
+   "score": 53.3,
+   "driver_score": 5.8,
+   "confirmation_score": 85.0,
+   "coverage_pct": 100.0,
+   "components": {
+    "net_liquidity_trend": {
+     "points": 2.04,
+     "max": 22.0,
+     "note": "net liquidity (WALCL-TGA-RRP) -2.4% / 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "real_yield_direction": {
+     "points": 0.26,
+     "max": 18.0,
+     "note": "real yield +19bp / 60d",
+     "missing": false,
+     "kind": "driver"
+    },
+    "dxy_direction": {
+     "points": 6.97,
+     "max": 14.0,
+     "note": "dollar -0.5% / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "btc_trend_20d": {
+     "points": 13.21,
+     "max": 14.0,
+     "note": "BTC +22.8% / 20d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "btc_vs_gold": {
+     "points": 10.8,
+     "max": 12.0,
+     "note": "BTC +16.5pp vs gold / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "btc_vs_ndx": {
+     "points": 10.0,
+     "max": 10.0,
+     "note": "BTC +23.1pp vs Nasdaq / 60d",
+     "missing": false,
+     "kind": "confirmation"
+    },
+    "credit_risk_gate": {
+     "points": 10.0,
+     "max": 10.0,
+     "note": "HY OAS 2.73%",
+     "missing": false,
+     "kind": "confirmation"
+    }
+   }
+  }
+ },
+ "signals": {
+  "gold": {
+   "asset": "Gold",
+   "asset_cn": "黄金",
+   "signal": "Neutral",
+   "signal_cn": "中性",
+   "emoji": "⚪",
+   "index": 3,
+   "reason": "贬值分 39，阶段基线 偏多"
+  },
+  "btc": {
+   "asset": "BTC",
+   "asset_cn": "比特币",
+   "signal": "Neutral",
+   "signal_cn": "中性",
+   "emoji": "⚪",
+   "index": 3,
+   "reason": "BTC流动性分 53，阶段基线 中性"
+  },
+  "ust30": {
+   "asset": "UST 30Y",
+   "asset_cn": "30年美债",
+   "signal": "Caution",
+   "signal_cn": "谨慎",
+   "emoji": "🟡",
+   "index": 2,
+   "reason": "财政压力分 42"
+  },
+  "usd": {
+   "asset": "USD",
+   "asset_cn": "美元",
+   "signal": "Neutral",
+   "signal_cn": "中性",
+   "emoji": "⚪",
+   "index": 3,
+   "reason": "贬值分 39"
+  }
+ },
+ "btc_checklist": {
+  "current_signal": "Neutral",
+  "current_signal_cn": "中性",
+  "target_signal": "Strong Bullish",
+  "target_signal_cn": "强烈偏多",
+  "items": [
+   {
+    "key": "long_end_stable",
+    "label_cn": "30Y 不再持续上升",
+    "passed": true,
+    "detail": "30Y 60日 +12bp",
+    "target": "< +20bp"
+   },
+   {
+    "key": "dollar_weak",
+    "label_cn": "美元转弱",
+    "passed": true,
+    "detail": "美元 60日 -0.5%",
+    "target": "< 0%"
+   },
+   {
+    "key": "real_yield_down",
+    "label_cn": "实际利率下降",
+    "passed": false,
+    "detail": "10Y 实际利率 60日 +19bp",
+    "target": "< -10bp"
+   },
+   {
+    "key": "inflation_high",
+    "label_cn": "通胀保持高位",
+    "passed": true,
+    "detail": "CPI YoY 3.5%",
+    "target": "≥ 2.5%"
+   },
+   {
+    "key": "btc_gold_breakout",
+    "label_cn": "BTC/黄金比价 20日走强",
+    "passed": true,
+    "detail": "BTC/黄金比价 20日 +4.5%",
+    "target": "> 0%"
+   },
+   {
+    "key": "net_liquidity_up",
+    "label_cn": "净流动性回升",
+    "passed": false,
+    "detail": "净流动性 60日 -2.4%",
+    "target": "> 0%"
+   }
+  ],
+  "done": 4,
+  "total": 6,
+  "note": "4/6 项已满足"
+ },
+ "next_stage": {
+  "target": 2,
+  "target_name": "财政主导观察",
+  "items": [
+   {
+    "key": "fiscal_stress_min",
+    "label_cn": "财政压力分 ≥ 55",
+    "passed": false,
+    "actual": 41.6,
+    "target": "Fiscal Stress ≥ 55",
+    "detail": "实际 41.6"
+   },
+   {
+    "key": "long_end_elevated",
+    "label_cn": "长端处于高位",
+    "passed": true,
+    "actual": 5.19,
+    "target": "30Y ≥ 5.0% 或 3年百分位 ≥ 70",
+    "detail": "30Y 5.19% / 98th"
+   },
+   {
+    "key": "treasury_intervention",
+    "label_cn": "财政部/联储有干预动作",
+    "passed": false,
+    "actual": 0.0,
+    "target": "政策台账干预分 > 0",
+    "detail": "近期无记录"
+   },
+   {
+    "key": "inflation_sticky",
+    "label_cn": "通胀顽固",
+    "passed": false,
+    "actual": 3.5397514271936714,
+    "target": "CPI YoY ≥ 2.5% 且未快速回落",
+    "detail": "CPI 3.5%, 3м趋势 -0.41pp"
+   },
+   {
+    "key": "term_premium_elevated",
+    "label_cn": "期限溢价抬升",
+    "passed": true,
+    "actual": 0.8393,
+    "target": "10Y 期限溢价 ≥ 0.50%",
+    "detail": "实际 +0.84%"
+   },
+   {
+    "key": "dollar_weakening",
+    "label_cn": "美元走弱",
+    "passed": true,
+    "actual": -0.48584040192398703,
+    "target": "美元 60日 < 0%",
+    "detail": "实际 -0.5%"
+   }
+  ],
+  "done": 3,
+  "total": 2,
+  "note": "尚缺：财政压力分 42 未达 55（辅助条件 3 项已达标，需 2 项）"
+ },
+ "breakers": {
+  "breakers": [
+   {
+    "key": "A_real_rate_repricing",
+    "name_cn": "真实利率重定价（非财政溢价）",
+    "active": false,
+    "severity": 0.0,
+    "evidence": "30Y +12bp / 实际利率 +19bp（60日）",
+    "implication_cn": "市场在重新定价真实利率，而不是在给财政风险要溢价。这直接削弱金融压抑论。"
+   },
+   {
+    "key": "B_disinflation",
+    "name_cn": "通胀实质回落 + 实际利率上行",
+    "active": true,
+    "severity": 0.3559113287273665,
+    "evidence": "CPI YoY 3м -0.41pp / 实际利率 +19bp",
+    "implication_cn": "反通胀正常化路径，财政主导逻辑减弱。"
+   },
+   {
+    "key": "C_dollar_squeeze",
+    "name_cn": "美元大涨 + 金/BTC 双杀",
+    "active": false,
+    "severity": 0.0,
+    "evidence": "美元 -0.5% / 黄金 +4.0% / BTC +20.5%",
+    "implication_cn": "贬值交易在平仓，可能是美元流动性收紧。此时 BTC/黄金的宏观理由不成立。"
+   },
+   {
+    "key": "D_crypto_idiosyncratic",
+    "name_cn": "BTC 独涨（非宏观驱动）",
+    "active": false,
+    "severity": 0.0,
+    "evidence": "BTC +20.5% / 黄金 +4.0% / 实际利率 +19bp / 美元 -0.5%",
+    "implication_cn": "BTC 上涨来自加密圈内部流动性而非宏观贬值。别把这波涨幅记在宏观假设头上。"
+   },
+   {
+    "key": "E_driver_confirm_gap",
+    "name_cn": "驱动与市场确认背离",
+    "active": true,
+    "severity": 0.5598571428571428,
+    "evidence": "驱动分 18 vs 市场确认分 54（差 -36）",
+    "implication_cn": "市场在涨但宏观驱动不支持：涨幅的原因不在这套框架里。"
+   }
+  ],
+  "active_count": 2,
+  "severity_total": 0.92,
+  "thesis_penalty": 16.5
+ },
+ "stability": {
+  "days_in_stage": 85,
+  "flips_90d": 1,
+  "trustworthy": true
+ },
+ "confidence": {
+  "confidence": 97.4,
+  "penalty": 2.6,
+  "notes": []
+ },
+ "narrative": {
+  "date": "2026-08-21",
+  "headline": "Stage 1 — 财政压力（Fiscal Stress）",
+  "today": [
+   {
+    "label": "30Y 美债",
+    "value": "5.19%",
+    "change": "-5bp",
+    "arrow": "↓",
+    "raw_change": -0.04999999999999982
+   },
+   {
+    "label": "10Y 实际利率",
+    "value": "2.35%",
+    "change": "-7bp",
+    "arrow": "↓",
+    "raw_change": -0.06999999999999984
+   },
+   {
+    "label": "10Y 期限溢价",
+    "value": "0.84%",
+    "change": "+1bp",
+    "arrow": "↑",
+    "raw_change": 0.013600000000000056
+   },
+   {
+    "label": "美元 DXY",
+    "value": "98.73",
+    "change": "-0.9%",
+    "arrow": "↓",
+    "raw_change": -0.9451202569269679
+   },
+   {
+    "label": "黄金",
+    "value": "$4,624",
+    "change": "+5.6%",
+    "arrow": "↑",
+    "raw_change": 5.565708574650996
+   },
+   {
+    "label": "BTC",
+    "value": "$77,044",
+    "change": "+22.6%",
+    "arrow": "↑",
+    "raw_change": 22.645611515041274
+   }
+  ],
+  "movers": [
+   "debasement·gold_trend +3.4分（gold +4.0% / 60d）",
+   "btc_liquidity·btc_trend_20d +2.3分（BTC +22.8% / 20d）",
+   "debasement·btc_trend +1.3分（BTC +20.5% / 60d）"
+  ],
+  "verdict": "当前处于 Stage 1（财政压力），综合 32/100。市场确认（54）明显强于宏观驱动（18）：价格在走但这套框架解释不了，涨幅别记在宏观假设头上。长端归因：长端名义净变动很小，但内部发生轮动：实际利率上行、通胀预期回落。这是偏鹰的实际利率重定价，不是财政主导。。距离 Stage 2（财政主导观察）：尚缺：财政压力分 42 未达 55（辅助条件 3 项已达标，需 2 项）。⚠️ 反向信号触发 2 项（通胀实质回落 + 实际利率上行、驱动与市场确认背离），支持性评分已扣减 16。该阶段已持续 85 天。",
+  "strategy": [
+   {
+    "stage_note": "财政压力显现：黄金开始有配置理由，长久期美债降低。",
+    "rows": [
+     {
+      "asset_cn": "黄金",
+      "signal_cn": "中性",
+      "emoji": "⚪",
+      "reason": "贬值分 39，阶段基线 偏多"
+     },
+     {
+      "asset_cn": "BTC",
+      "signal_cn": "中性",
+      "emoji": "⚪",
+      "reason": "BTC流动性分 53，阶段基线 中性"
+     },
+     {
+      "asset_cn": "长久期美债",
+      "signal_cn": "谨慎",
+      "emoji": "🟡",
+      "reason": "财政压力分 42"
+     },
+     {
+      "asset_cn": "美元",
+      "signal_cn": "中性",
+      "emoji": "⚪",
+      "reason": "贬值分 39"
+     }
+    ]
+   }
+  ],
+  "btc_checklist_note": "4/6 项已满足",
+  "disclaimer": "本工具输出的是规则化风险姿态标签，不是交易指令，不构成投资建议。所有分数与阶段由确定性规则计算，文字由模板渲染，不经过语言模型。"
+ },
+ "policy": {
+  "recent_facts": [],
+  "recent_inferences": [],
+  "ledger_size": 16,
+  "fiscal_intervention_score": 0.0,
+  "repression_score": 0.0
+ },
+ "yield_decomposition": {
+  "d10y_60d": 0.09000000000000075,
+  "real_60d": 0.18999999999999995,
+  "breakeven_60d": -0.06000000000000005,
+  "termprem_60d": -0.02279999999999993,
+  "driver": "rotation_real_up",
+  "driver_cn": "长端名义净变动很小，但内部发生轮动：实际利率上行、通胀预期回落。这是偏鹰的实际利率重定价，不是财政主导。"
+ },
+ "key_metrics": [
+  {
+   "key": "dgs30",
+   "label": "30Y 美债",
+   "series": "DGS30",
+   "value": 5.19,
+   "unit": "%",
+   "change": -0.04999999999999982,
+   "change_unit": "bp",
+   "as_of": "2026-08-19",
+   "stale_days": 2,
+   "source_url": "https://fred.stlouisfed.org/series/DGS30"
+  },
+  {
+   "key": "dfii10",
+   "label": "10Y 实际利率",
+   "series": "DFII10",
+   "value": 2.35,
+   "unit": "%",
+   "change": -0.06999999999999984,
+   "change_unit": "bp",
+   "as_of": "2026-08-19",
+   "stale_days": 2,
+   "source_url": "https://fred.stlouisfed.org/series/DFII10"
+  },
+  {
+   "key": "tp10",
+   "label": "10Y 期限溢价",
+   "series": "THREEFYTP10",
+   "value": 0.8393,
+   "unit": "%",
+   "change": 0.013600000000000056,
+   "change_unit": "bp",
+   "as_of": "2026-08-14",
+   "stale_days": 7,
+   "source_url": "https://fred.stlouisfed.org/series/THREEFYTP10"
+  },
+  {
+   "key": "t5yifr",
+   "label": "5Y5Y 通胀预期",
+   "series": "T5YIFR",
+   "value": 2.34,
+   "unit": "%",
+   "change": 0.06999999999999984,
+   "change_unit": "bp",
+   "as_of": "2026-08-20",
+   "stale_days": 1,
+   "source_url": "https://fred.stlouisfed.org/series/T5YIFR"
+  },
+  {
+   "key": "cpi",
+   "label": "CPI 同比",
+   "series": "CPIAUCSL",
+   "value": 3.5397514271936714,
+   "unit": "%",
+   "change": -0.407275481510605,
+   "change_unit": "pp",
+   "as_of": "2026-07-01",
+   "stale_days": 51,
+   "source_url": "https://fred.stlouisfed.org/series/CPIAUCSL"
+  },
+  {
+   "key": "dxy",
+   "label": "美元 DXY",
+   "series": "DXY",
+   "value": 98.72799682617188,
+   "unit": "",
+   "change": -0.9451202569269679,
+   "change_unit": "%",
+   "as_of": "2026-08-21",
+   "stale_days": 0,
+   "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB"
+  },
+  {
+   "key": "gold",
+   "label": "黄金",
+   "series": "GOLD",
+   "value": 4624.2001953125,
+   "unit": "$",
+   "change": 5.565708574650996,
+   "change_unit": "%",
+   "as_of": "2026-08-21",
+   "stale_days": 0,
+   "source_url": "https://finance.yahoo.com/quote/GC=F"
+  },
+  {
+   "key": "btc",
+   "label": "BTC",
+   "series": "BTC",
+   "value": 77044.3203125,
+   "unit": "$",
+   "change": 22.645611515041274,
+   "change_unit": "%",
+   "as_of": "2026-08-21",
+   "stale_days": 0,
+   "source_url": "https://www.coingecko.com/en/coins/bitcoin"
+  },
+  {
+   "key": "btcgold",
+   "label": "BTC/黄金 比价",
+   "series": "BTC",
+   "value": 16.661112637510584,
+   "unit": "",
+   "change": 4.525164046187391,
+   "change_unit": "%",
+   "as_of": "2026-08-21",
+   "stale_days": 0,
+   "source_url": ""
+  },
+  {
+   "key": "netliq",
+   "label": "净流动性",
+   "series": "WALCL",
+   "value": 5.791862,
+   "unit": "T$",
+   "change": -2.35228365718968,
+   "change_unit": "%",
+   "as_of": "2026-08-19",
+   "stale_days": 2,
+   "source_url": "https://fred.stlouisfed.org/series/WALCL"
+  },
+  {
+   "key": "btc_spot",
+   "label": "BTC 实时",
+   "series": "BTC",
+   "value": 77182.0,
+   "unit": "$",
+   "change": 8.308538603799265,
+   "change_unit": "%",
+   "as_of": "2026-08-21T08:27:00+00:00",
+   "stale_days": 0,
+   "source_url": "https://www.coingecko.com/en/coins/bitcoin"
+  }
+ ],
+ "sources": [
+  {
+   "series": "BAMLH0A0HYM2",
+   "label": "HY OAS",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "BTC",
+   "label": "Bitcoin",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/BTC-USD",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "CPIAUCSL",
+   "label": "CPI",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/CPIAUCSL",
+   "freq": "m",
+   "release_lag_days": 14,
+   "from_cache": false
+  },
+  {
+   "series": "CPILFESL",
+   "label": "Core CPI",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/CPILFESL",
+   "freq": "m",
+   "release_lag_days": 14,
+   "from_cache": false
+  },
+  {
+   "series": "DFEDTARU",
+   "label": "Fed Target Upper",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DFEDTARU",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DFII10",
+   "label": "10Y Real Yield",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DFII10",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DFII30",
+   "label": "30Y Real Yield",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DFII30",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DFII5",
+   "label": "5Y Real Yield",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DFII5",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DGS10",
+   "label": "10Y Treasury",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DGS10",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DGS2",
+   "label": "2Y Treasury",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DGS2",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DGS30",
+   "label": "30Y Treasury",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DGS30",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DGS3MO",
+   "label": "3M Bill",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DGS3MO",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DGS5",
+   "label": "5Y Treasury",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DGS5",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "DTWEXBGS",
+   "label": "Broad Dollar Index",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/DTWEXBGS",
+   "freq": "d",
+   "release_lag_days": 4,
+   "from_cache": false
+  },
+  {
+   "series": "DXY",
+   "label": "DXY",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/DX-Y.NYB",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "FEDFUNDS",
+   "label": "Fed Funds (eff, avg)",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/FEDFUNDS",
+   "freq": "m",
+   "release_lag_days": 2,
+   "from_cache": false
+  },
+  {
+   "series": "FYFSGDA188S",
+   "label": "Deficit / GDP (annual)",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/FYFSGDA188S",
+   "freq": "a",
+   "release_lag_days": 270,
+   "from_cache": false
+  },
+  {
+   "series": "GFDEGDQ188S",
+   "label": "Federal Debt / GDP",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/GFDEGDQ188S",
+   "freq": "q",
+   "release_lag_days": 90,
+   "from_cache": false
+  },
+  {
+   "series": "GOLD",
+   "label": "Gold (COMEX front)",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/GC=F",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "NDX",
+   "label": "Nasdaq 100",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/^NDX",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "PCEPI",
+   "label": "PCE",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/PCEPI",
+   "freq": "m",
+   "release_lag_days": 30,
+   "from_cache": false
+  },
+  {
+   "series": "PCEPILFE",
+   "label": "Core PCE",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/PCEPILFE",
+   "freq": "m",
+   "release_lag_days": 30,
+   "from_cache": false
+  },
+  {
+   "series": "RRPONTSYD",
+   "label": "Overnight Reverse Repo",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/RRPONTSYD",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "SPX",
+   "label": "S&P 500",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/^GSPC",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "T10YIE",
+   "label": "10Y Breakeven",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/T10YIE",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "T5YIE",
+   "label": "5Y Breakeven",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/T5YIE",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "T5YIFR",
+   "label": "5Y5Y Forward",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/T5YIFR",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "THREEFYTP10",
+   "label": "10Y Term Premium (ACM)",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/THREEFYTP10",
+   "freq": "d",
+   "release_lag_days": 2,
+   "from_cache": false
+  },
+  {
+   "series": "TNX",
+   "label": "10Y (Yahoo backup)",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/quote/^TNX",
+   "freq": "d",
+   "release_lag_days": 0,
+   "from_cache": false
+  },
+  {
+   "series": "VIXCLS",
+   "label": "VIX",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/VIXCLS",
+   "freq": "d",
+   "release_lag_days": 1,
+   "from_cache": false
+  },
+  {
+   "series": "WALCL",
+   "label": "Fed Total Assets",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/WALCL",
+   "freq": "w",
+   "release_lag_days": 2,
+   "from_cache": false
+  },
+  {
+   "series": "WRESBAL",
+   "label": "Reserve Balances",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/WRESBAL",
+   "freq": "w",
+   "release_lag_days": 2,
+   "from_cache": false
+  },
+  {
+   "series": "WTREGEN",
+   "label": "Treasury General Acct",
+   "source": "FRED (St. Louis Fed)",
+   "url": "https://fred.stlouisfed.org/series/WTREGEN",
+   "freq": "w",
+   "release_lag_days": 2,
+   "from_cache": false
+  }
+ ]
+}

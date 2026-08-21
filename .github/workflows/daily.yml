@@ -1,0 +1,66 @@
+name: Daily macro update
+
+on:
+  schedule:
+    # 22:00 UTC == 07:00 JST next day. FRED posts the day's rates around
+    # 16:15 ET (20:15/21:15 UTC), so this lands after the data is up.
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'engine/**'
+      - 'data/policy_events.json'
+      - '.github/workflows/daily.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-macro
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+
+      - name: Collect data and run rule engine
+        env:
+          # Optional. Without it the keyless fredgraph CSV endpoint is used,
+          # which is why this repo needs no secrets to work.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python -m engine.run --days 400
+
+      - name: Sanity-check output
+        run: |
+          python - <<'PY'
+          import json, sys, datetime
+          d = json.load(open('docs/data/latest.json'))
+          assert d['stage'] in (0,1,2,3,4), f"bad stage {d['stage']}"
+          assert 0 <= d['composite'] <= 100, f"bad composite {d['composite']}"
+          assert d['scores']['fiscal_stress']['coverage_pct'] > 50, "coverage collapsed"
+          age = (datetime.date.today() - datetime.date.fromisoformat(d['as_of'])).days
+          assert age <= 7, f"data is {age} days stale — collection probably failed"
+          print(f"OK stage={d['stage']} composite={d['composite']} as_of={d['as_of']}")
+          PY
+
+      - name: Commit updated data
+        run: |
+          git config user.name  "fdm-bot"
+          git config user.email "fdm-bot@users.noreply.github.com"
+          git add docs/data data/cache
+          if git diff --staged --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: $(date -u +%Y-%m-%d) macro update [skip ci]"
+            git push
+          fi

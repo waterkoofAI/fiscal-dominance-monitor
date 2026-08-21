@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0e13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FDM">
+<title>Fiscal Dominance Monitor</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Fiscal Dominance Monitor</h1>
+    <div class="asof" id="asof">载入中…</div>
+  </header>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="page on" id="p-overview">
+    <div id="hero"></div>
+    <div class="card"><h2>今日判断</h2><div id="verdict" class="verdict"></div><div id="movers" class="movers"></div></div>
+    <div class="card"><h2>驱动 vs 市场确认 <em>反循环论证</em></h2><div id="dc"></div></div>
+    <div class="card"><h2>四项评分</h2><div id="scores"></div></div>
+    <div class="card"><h2>资产信号 <em>风险姿态·非指令</em></h2><div id="signals"></div></div>
+    <div class="card"><h2 id="nsTitle">距离下一阶段</h2><div id="nextstage"></div></div>
+    <div class="card"><h2>BTC 加仓确认清单</h2><div id="btcchk"></div></div>
+    <div class="card"><h2>反向信号 <em>Thesis Breakers</em></h2><div id="breakers"></div></div>
+  </section>
+
+  <!-- ============ MACRO ============ -->
+  <section class="page" id="p-macro">
+    <div class="card"><h2>今日关键指标</h2><div id="metrics" class="mgrid"></div>
+      <div class="note">点任一指标跳转官方数据源。橙点 = 该序列已滞后（月频/周频数据本来就有发布延迟）。</div></div>
+    <div class="card"><h2>长端归因 <em>核心问题</em></h2><div id="decomp"></div></div>
+    <div class="card"><h2>走势</h2><div id="macrocharts"></div></div>
+  </section>
+
+  <!-- ============ ASSETS ============ -->
+  <section class="page" id="p-assets">
+    <div class="card"><h2>黄金 / BTC 体制</h2><div id="regime"></div></div>
+    <div class="card"><h2>走势</h2><div id="assetcharts"></div></div>
+  </section>
+
+  <!-- ============ POLICY ============ -->
+  <section class="page" id="p-policy">
+    <div class="card"><h2>政策台账 <em>人工维护</em></h2>
+      <div class="warn" id="ledgerwarn"></div>
+      <div id="policyfacts"></div></div>
+    <div class="card"><h2>推测（不参与计分）</h2><div id="policyinf"></div></div>
+    <div class="card"><h2>数据来源</h2><table class="src"><tbody id="sources"></tbody></table></div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="page" id="p-history">
+    <div class="card"><h2>阶段历史</h2><div id="stagestrip"></div><div id="histcharts"></div></div>
+    <div class="card"><h2>可信度</h2><div id="confidence"></div></div>
+  </section>
+</div>
+
+<nav><div class="inner">
+  <button class="on" data-p="overview"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>总览</button>
+  <button data-p="macro"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>宏观</button>
+  <button data-p="assets"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h5M9.5 14.5h5"/></svg>资产</button>
+  <button data-p="policy"><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-6h4v6"/></svg>政策</button>
+  <button data-p="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>历史</button>
+</div></nav>
+
+<script src="app.js"></script>
+</body>
+</html>
