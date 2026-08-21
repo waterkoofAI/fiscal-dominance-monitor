@@ -132,6 +132,36 @@ def btc_upgrade_checklist(f: dict, sc: dict, current: str) -> dict:
     }
 
 
+def apply_hysteresis(raw_idx: list[int | None],
+                     persistence: int | None = None) -> list[int | None]:
+    """
+    Damp a per-day sequence of signal indices.
+
+    Same mechanism as the stage machine: a new level is adopted only after it
+    has held for `persistence` consecutive days. Without this, a score drifting
+    across a threshold by hundredths of a point rewrites the user-facing
+    recommendation for a day and then takes it back.
+    """
+    P = persistence or config.SIGNAL_PERSISTENCE
+    out: list[int | None] = []
+    cur: int | None = None
+    streak_val: int | None = None
+    streak_len = 0
+
+    for r in raw_idx:
+        if r is None:
+            out.append(cur)
+            continue
+        if cur is None:
+            cur = r                      # first observation seeds the state
+        streak_len = streak_len + 1 if r == streak_val else 1
+        streak_val = r
+        if r != cur and streak_len >= P:
+            cur = r
+        out.append(cur)
+    return out
+
+
 # ------------------------------------------------------ posture & trend ----
 # Posture is about EXPOSURE to the named asset, derived from the signal level.
 # It is still a risk-posture label, not an order: there is no size, no price and

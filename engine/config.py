@@ -175,6 +175,15 @@ DRIVER_COMPONENTS = {
 ENTRY_PERSISTENCE = 3
 EXIT_BUFFER = 6.0
 
+# Asset signals need the same damping as the stage label, and for a sharper
+# reason: the stage is context, but the SIGNAL is the line the user acts on.
+# Measured failure — a debasement score of 39.9 vs 40.04 (0.15 points, both
+# displaying as "40") flipped gold between 中性 and 偏多, because the score
+# thresholds in signals.py are knife edges with no dead band. Requiring a new
+# signal to hold for SIGNAL_PERSISTENCE consecutive days makes a one-day graze
+# across a threshold a non-event.
+SIGNAL_PERSISTENCE = 3
+
 STAGE_DEFS = {
     0: {"name": "Normal Regime",            "name_cn": "常态",           "color": "#2ea043"},
     1: {"name": "Fiscal Stress",            "name_cn": "财政压力",       "color": "#d4a72c"},

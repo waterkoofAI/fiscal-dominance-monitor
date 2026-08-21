@@ -134,12 +134,30 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         except Exception:                                   # noqa: BLE001
             sig_history.append(None)
 
+    # Damp each asset's signal the same way the stage label is damped. Do this
+    # BEFORE anything reads sig_history, so the trajectory, the posture and the
+    # final signal all describe the same damped series.
+    for asset in ("gold", "btc", "ust30", "usd"):
+        raw_idx = [h[asset]["index"] if h else None for h in sig_history]
+        for h, idx in zip(sig_history, signals.apply_hysteresis(raw_idx)):
+            if h is None or idx is None:
+                continue
+            lvl = config.SIGNAL_LEVELS[idx]
+            if lvl != h[asset]["signal"]:
+                h[asset]["raw_signal"] = h[asset]["signal"]
+                h[asset]["reason"] += f"（原始 {signals.CN[h[asset]['signal']]}，迟滞未确认）"
+            h[asset]["signal"] = lvl
+            h[asset]["signal_cn"] = signals.CN[lvl]
+            h[asset]["emoji"] = signals.EMOJI[lvl]
+            h[asset]["index"] = idx
+
     last = days[-1]
     prev_sc = days[-2]["scores"] if len(days) > 1 else None
     stab = stage_stability(conf_seq)
     checklist = next_stage_checklist(last["stage"], last["detail"])
     brk = breakers.evaluate(last["features"], last["scores"])
-    sig = signals.compute(last["stage"], last["scores"], last["features"], brk)
+    sig = sig_history[-1] or signals.compute(last["stage"], last["scores"],
+                                             last["features"], brk)
     btc_check = signals.btc_upgrade_checklist(last["features"], last["scores"],
                                               sig["btc"]["signal"])
     for k in sig:

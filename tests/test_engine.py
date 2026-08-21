@@ -321,6 +321,47 @@ class TestPostureAndTrajectory(unittest.TestCase):
         self.assertNotIn("无变化", t["summary_cn"])
 
 
+class TestSignalHysteresis(unittest.TestCase):
+    """Regression: a 0.15-point score wobble must not rewrite the recommendation."""
+
+    def _gold_idx(self, deb_scores):
+        out = []
+        for deb in deb_scores:
+            sc = {"debasement": {"score": deb}, "btc_liquidity": {"score": 50},
+                  "fiscal_stress": {"score": 42}}
+            out.append(signals.compute(1, sc, {}, {"thesis_penalty": 0.0})["gold"]["index"])
+        return out
+
+    def test_knife_edge_is_real_before_damping(self):
+        """Document the raw behaviour the damping exists to fix."""
+        raw = self._gold_idx([39.9, 40.04, 39.9, 40.04])
+        self.assertNotEqual(len(set(raw)), 1,
+                            "raw signal should indeed flip across the 40 threshold")
+
+    def test_hysteresis_removes_the_flicker(self):
+        raw = self._gold_idx([39.9, 40.04, 39.9, 40.04, 39.9, 40.04])
+        damped = signals.apply_hysteresis(raw)
+        self.assertEqual(len(set(damped)), 1,
+                         "an oscillating score must not produce an oscillating signal")
+
+    def test_sustained_move_still_gets_through(self):
+        raw = self._gold_idx([39.0, 39.0, 39.0, 45.0, 45.0, 45.0, 45.0])
+        damped = signals.apply_hysteresis(raw)
+        self.assertNotEqual(damped[0], damped[-1],
+                            "a sustained change must still be adopted")
+
+    def test_none_entries_hold_previous(self):
+        self.assertEqual(signals.apply_hysteresis([3, None, None, 3]),
+                         [3, 3, 3, 3])
+
+    def test_damped_never_leads_raw(self):
+        """The damped series may lag the raw one, never anticipate it."""
+        raw = [3, 3, 5, 5, 5, 5]
+        damped = signals.apply_hysteresis(raw, persistence=3)
+        self.assertEqual(damped[:4], [3, 3, 3, 3])
+        self.assertEqual(damped[4], 5)
+
+
 class TestNearestTriggers(unittest.TestCase):
     def test_no_bogus_gap_on_compound_gate(self):
         """CPI already past 2.5 must not report 还差 X% just because the gate failed."""
