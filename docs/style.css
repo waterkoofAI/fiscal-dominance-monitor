@@ -212,3 +212,36 @@ nav button.on{color:var(--tx)}
 .trig .row b{font-family:var(--mono);color:#8ab4f8;font-weight:600;
   margin-left:auto;white-space:nowrap;font-size:12px}
 .trig .row.compound b{color:var(--tx3)}
+
+/* ---------- narrative tracker ---------- */
+.nar{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:12px;
+  background:var(--bg2)}
+.nar .ti{font-size:14.5px;font-weight:700;line-height:1.4}
+.nar .src{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:3px}
+.nar .src a{color:var(--b);text-decoration:none}
+.nar .st{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;
+  border-radius:6px;margin:9px 0 3px}
+.st-refuted{background:rgba(229,72,77,.16);color:var(--r)}
+.st-confirmed{background:rgba(46,160,67,.16);color:var(--g)}
+.st-mixed{background:rgba(212,167,44,.16);color:var(--y)}
+.st-neutral,.st-unknown{background:var(--card2);color:var(--tx2)}
+.nar .tally{font-family:var(--mono);font-size:11.5px;color:var(--tx3);margin-left:8px}
+.nar .sum{font-size:12.5px;color:var(--tx2);line-height:1.6;margin:8px 0 4px;
+  padding:9px 11px;background:var(--card);border-radius:8px}
+.nar .sec{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tx3);margin:12px 0 5px;font-weight:600}
+.nar .cnd{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:12.5px}
+.nar .cnd .bx{width:16px;flex:none;line-height:1.4}
+.nar .cnd .lb{flex:1;min-width:0;line-height:1.4}
+.nar .cnd .dt{font-family:var(--mono);font-size:10.5px;color:var(--tx3);
+  margin-top:1px;display:block}
+.cnd.hit .lb{color:var(--tx)} .cnd.miss .lb{color:var(--tx3)}
+.cnd.fire .lb{color:var(--r);font-weight:600}
+.nar .unt{font-size:11.5px;color:var(--tx3);line-height:1.6;padding:5px 0 5px 16px;
+  position:relative}
+.nar .unt::before{content:"✕";position:absolute;left:0;color:var(--tx3)}
+.nar .scale{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;
+  padding:5px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.nar .scale:last-child{border-bottom:0}
+.nar .scale b{font-family:var(--mono);color:var(--tx);flex:none}
+.nar .scale .nt{color:var(--tx3);font-size:10.5px;flex:1;text-align:right}

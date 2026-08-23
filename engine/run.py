@@ -15,8 +15,8 @@ import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from . import (breakers, config, features, narrative, policy, scenarios,
-               scores, signals, sources)
+from . import (breakers, config, features, narrative, narratives, policy,
+               scenarios, scores, signals, sources)
 from .features import Panel
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -164,6 +164,7 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         sig[k]["posture"] = signals.posture(sig[k]["index"])
         sig[k]["trajectory"] = signals.trajectory(sig_history, k)
     scen = scenarios.compute(last["features"], last["scores"], last["policy"])
+    narr_track = narratives.evaluate(last["features"])
     triggers = nearest_triggers(checklist)
     conf = _confidence(last["features"], p, last["date"])
     narr = narrative.build(last["date"], last["stage"], last["scores"],
@@ -196,6 +197,7 @@ def run(refresh: bool = True, backtest_days: int | None = None,
         "next_stage": checklist,
         "nearest_triggers": triggers,
         "scenarios": scen,
+        "narrative_tracker": narr_track,
         "breakers": brk,
         "stability": stab,
         "confidence": conf,

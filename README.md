@@ -150,6 +150,50 @@ Stage 4 是本系统后果最重的输出。让模型每天读标题去判断，
 
 ---
 
+## 叙事跟踪：把别人的说法变成可监控的检验
+
+有人发一套宏观论述，其中一部分可检验、一部分不可检验。常见的说服路径是先坐实
+可检验的部分，然后让你的信心顺势外溢到不可证伪的部分。`data/narratives.json`
+把这两半永久分开。
+
+每条叙事存三块：
+
+- `confirm` —— 成立则支持该说法的条件
+- `refute` —— 成立则反驳该说法的条件
+- `untestable` —— 明确无法检验的主张，**永远不参与打分**
+
+```json
+{
+  "id": "some-thesis-2026-08",
+  "title": "叙事标题",
+  "source": "@who",
+  "source_url": "https://...",
+  "recorded_at": "2026-08-23",
+  "summary_cn": "他的主张是……",
+  "confirm": [
+    {"id": "c1", "label_cn": "实际利率下行", "feature": "DFII10_chg_60d",
+     "op": "<", "value": -0.10, "unit": "bp"}
+  ],
+  "refute": [
+    {"id": "r1", "label_cn": "实际利率上行", "feature": "DFII10_chg_60d",
+     "op": ">", "value": 0.10, "unit": "bp"}
+  ],
+  "untestable": ["政治时间表——任何结果都能被它吸收"],
+  "scale_checks": [{"label_cn": "稳定币", "value": "$291.6B", "note": "量级核对"}]
+}
+```
+
+条件支持 `all` / `any` 嵌套。`feature` 是 `engine/features.py` 输出的任一字段
+（跑 `python3 -c "…compute_features…"` 可列出全部）。
+
+**两条铁律：**
+
+1. **`refute` 必须和 `confirm` 同时写。** 事后再决定「什么算错」不是检验。
+   `tests/test_engine.py` 会拒绝任何没有 `refute` 的叙事条目。
+2. **条件是结构化数据，不是表达式。** 这里没有 `eval()`，也不会有——
+   叙事文件是别人贴的内容，属于不可信输入，绝不能让它执行任何东西。
+   有一个 AST 测试守着这条。
+
 ## 常用命令
 
 ```bash

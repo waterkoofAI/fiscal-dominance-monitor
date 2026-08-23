@@ -261,6 +261,47 @@ function renderTriggers(d) {
   return n;
 }
 
+function renderNarratives(d) {
+  const t = d.narrative_tracker;
+  if (!t || !t.count) return;
+  $('#narrativeCard').style.display = '';
+  const box = el('div');
+  box.appendChild(el('div','prog',
+    '把别人的宏观说法拆成<b>可检验</b>与<b>不可检验</b>两半，'
+    + '确认与证伪条件在记录当天一并预注册，之后每天用真实数据打分。'));
+
+  t.narratives.forEach(n => {
+    const card = el('div','nar');
+    const cond = (c, fireOnPass) => {
+      const hit = c.passed === true;
+      const cls = c.passed === null ? 'miss' : (hit ? (fireOnPass ? 'fire' : 'hit') : 'miss');
+      const box2 = c.passed === null ? '◌' : (hit ? (fireOnPass ? '🚨' : '☑') : '☐');
+      return `<div class="cnd ${cls}"><span class="bx">${box2}</span>
+        <span class="lb">${c.label_cn}<span class="dt">${c.detail||''}</span></span></div>`;
+    };
+
+    card.innerHTML = `
+      <div class="ti">《${n.title}》</div>
+      <div class="src">${n.source}${n.source_url?` · <a href="${n.source_url}" target="_blank" rel="noopener">来源 ↗</a>`:''} · 记录于 ${n.recorded_at}</div>
+      <div><span class="st st-${n.status}">${n.status_cn}</span>
+        <span class="tally">确认 ${n.confirm_hit}/${n.confirm_total} · 证伪 ${n.refute_hit}/${n.refute_total}</span></div>
+      ${n.summary_cn?`<div class="sum">${n.summary_cn}</div>`:''}
+      <div class="sec">确认条件（成立则支持该说法）</div>
+      ${n.confirm.map(c => cond(c,false)).join('')}
+      <div class="sec">证伪条件（成立则反驳该说法）</div>
+      ${n.refute.map(c => cond(c,true)).join('')}
+      ${n.scale_checks && n.scale_checks.length ? `<div class="sec">量级核对</div>` +
+        n.scale_checks.map(x =>
+          `<div class="scale"><span>${x.label_cn}</span><b>${x.value}</b>
+           <span class="nt">${x.note||''}</span></div>`).join('') : ''}
+      ${n.untestable && n.untestable.length ? `<div class="sec">无法检验（不参与打分）</div>` +
+        n.untestable.map(u => `<div class="unt">${u}</div>`).join('') : ''}`;
+    box.appendChild(card);
+  });
+  box.appendChild(el('div','note', t.note));
+  $('#narratives').replaceChildren(box);
+}
+
 function renderMetrics(d) {
   const box = el('div');
   (d.key_metrics||[]).forEach(m => {
@@ -455,6 +496,7 @@ async function load() {
     renderTriggers(d));
   renderChecklist('#btcchk', d.btc_checklist);
   renderBreakers(d);
+  renderNarratives(d);
   renderMetrics(d);
   renderDecomp(d);
   renderRegime(d, h);

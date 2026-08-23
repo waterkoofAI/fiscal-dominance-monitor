@@ -12,8 +12,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from engine import (breakers, config, features, policy, scenarios,
-                    scores, signals, stages)
+from engine import (breakers, config, features, narratives, policy,
+                    scenarios, scores, signals, stages)
 from engine.features import Panel
 
 
@@ -385,6 +385,81 @@ class TestNearestTriggers(unittest.TestCase):
         cl = {"items": [{"key": "x", "label_cn": "ok", "passed": True, "actual": 9,
                          "threshold": 1, "direction": ">=", "unit": "pt"}]}
         self.assertEqual(stages.nearest_triggers(cl), [])
+
+
+class TestNarrativeTracker(unittest.TestCase):
+    """A narrative file is untrusted input — whoever pasted the thesis wrote it."""
+
+    F = {"DFII10_chg_60d": 0.25, "DGS30_chg_60d": 0.20,
+         "GOLD_ret_60d": 4.0, "BTC_ret_60d": 23.0, "cpi_yoy_trend_3m": -0.41}
+
+    def test_no_dynamic_execution_in_source(self):
+        """
+        Parse the AST rather than grepping for "eval(" — the module docstring
+        legitimately contains that string while explaining why it is not used,
+        and a text match on comments would be a test of prose, not of code.
+        """
+        import ast
+        src = (Path(__file__).resolve().parent.parent / "engine" / "narratives.py").read_text()
+        banned = {"eval", "exec", "compile", "__import__", "getattr", "setattr"}
+        for node in ast.walk(ast.parse(src)):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+                self.assertNotIn(node.func.id, banned,
+                                 f"narratives.py must never call {node.func.id}()")
+            if isinstance(node, ast.Import):
+                for a in node.names:
+                    self.assertNotIn(a.name, {"os", "subprocess", "sys", "importlib"},
+                                     f"narratives.py must not import {a.name}")
+
+    def test_unknown_operator_is_rejected_not_executed(self):
+        c = {"id": "x", "label_cn": "恶意", "feature": "DFII10_chg_60d",
+             "op": "__import__('os').system", "value": 0}
+        self.assertIsNone(narratives._eval_cond(c, self.F)["passed"])
+
+    def test_simple_condition(self):
+        c = {"id": "x", "label_cn": "实际利率上行",
+             "feature": "DFII10_chg_60d", "op": ">", "value": 0.10, "unit": "bp"}
+        self.assertTrue(narratives._eval_cond(c, self.F)["passed"])
+
+    def test_all_combiner_needs_every_child(self):
+        c = {"id": "x", "label_cn": "组合", "all": [
+            {"id": "a", "label_cn": "", "feature": "GOLD_ret_60d", "op": "<", "value": 0.0},
+            {"id": "b", "label_cn": "", "feature": "BTC_ret_60d", "op": ">", "value": 0.0}]}
+        self.assertFalse(narratives._eval_cond(c, self.F)["passed"])
+
+    def test_missing_feature_is_none_not_false(self):
+        c = {"id": "x", "label_cn": "", "feature": "NOPE", "op": ">", "value": 0}
+        self.assertIsNone(narratives._eval_cond(c, self.F)["passed"])
+
+    def test_missing_child_makes_parent_unknown(self):
+        c = {"id": "x", "label_cn": "", "all": [
+            {"id": "a", "label_cn": "", "feature": "NOPE", "op": ">", "value": 0},
+            {"id": "b", "label_cn": "", "feature": "BTC_ret_60d", "op": ">", "value": 0}]}
+        self.assertIsNone(narratives._eval_cond(c, self.F)["passed"])
+
+    def test_refuted_status_when_refutes_dominate(self):
+        n = {"id": "t", "title": "t",
+             "confirm": [{"id": "c1", "label_cn": "", "feature": "DFII10_chg_60d",
+                          "op": "<", "value": -0.10}],
+             "refute": [{"id": "r1", "label_cn": "", "feature": "DFII10_chg_60d",
+                         "op": ">", "value": 0.10}]}
+        self.assertEqual(narratives.evaluate_one(n, self.F)["status"], "refuted")
+
+    def test_untestable_claims_never_score(self):
+        n = {"id": "t", "title": "t", "confirm": [], "refute": [],
+             "untestable": ["政治时间表", "家族动机"]}
+        out = narratives.evaluate_one(n, self.F)
+        self.assertEqual(out["confirm_total"], 0)
+        self.assertEqual(out["refute_total"], 0)
+        self.assertEqual(len(out["untestable"]), 2)
+        self.assertEqual(out["status"], "unknown")
+
+    def test_shipped_ledger_preregisters_both_sides(self):
+        """Every stored narrative must carry refute conditions, not just confirms."""
+        for n in narratives.load():
+            self.assertTrue(n.get("confirm"), f"{n.get('id')} has no confirm conditions")
+            self.assertTrue(n.get("refute"),
+                            f"{n.get('id')} has no refute conditions — that is not a test")
 
 
 if __name__ == "__main__":
