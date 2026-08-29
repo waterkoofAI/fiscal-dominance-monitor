@@ -112,6 +112,18 @@ def verdict(stage: int, sc: dict, f: dict, brk: dict, stab: dict,
         else:
             parts.append(f"驱动 {dv:.0f} 与市场确认 {cv:.0f} 大体一致。")
 
+    pe = f.get("policy_expectation")
+    sp = f.get("policy_spread_2y")
+    if pe and sp is not None:
+        PE_CN = {
+            "hiking": f"市场在定价加息（2年期高出政策利率上限 {sp*100:.0f}bp）。"
+                      "这对金融压抑论是结构性不利：压抑要求联储被财政绑住并压低实际利率，"
+                      "而定价加息说明联储仍在主张独立性。",
+            "cutting": f"市场在定价降息（2年期低于政策利率上限 {abs(sp)*100:.0f}bp）。",
+            "on_hold": f"市场定价按兵不动（2年期与政策利率上限相差 {sp*100:+.0f}bp）。",
+        }
+        parts.append(PE_CN[pe])
+
     drv = f.get("decomp_driver")
     if drv and drv in DRIVER_CN:
         # some labels already end in a full stop; do not double it up

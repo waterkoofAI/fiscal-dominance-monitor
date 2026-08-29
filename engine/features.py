@@ -260,6 +260,26 @@ def compute_features(p: Panel, when: date) -> dict:
         f[f"{sid.lower()}_from_ath_pct"] = ((cur / ath - 1.0) * 100.0
                                             if (ath and cur) else None)
 
+    # --- market-implied policy direction ----------------------------------
+    # The front end versus the current target is a free, transparent read on
+    # whether the market expects the Fed to hike or cut. It matters here for a
+    # specific reason: financial repression requires a Fed that is CONSTRAINED
+    # and keeping real rates down. A market pricing HIKES is direct evidence
+    # the Fed is not being run by the fiscal problem — which is exactly the
+    # opposite of the Stage 3 story, however high the debt gets.
+    tgt = f.get("DFEDTARU_level")
+    if tgt is not None:
+        for sid, tag in (("DGS3MO", "3m"), ("DGS2", "2y")):
+            lv = f.get(f"{sid}_level")
+            f[f"policy_spread_{tag}"] = (lv - tgt) if lv is not None else None
+        sp = f.get("policy_spread_2y")
+        f["policy_expectation"] = (
+            None if sp is None else
+            ("hiking" if sp > 0.15 else ("cutting" if sp < -0.15 else "on_hold")))
+    else:
+        f["policy_spread_3m"] = f["policy_spread_2y"] = None
+        f["policy_expectation"] = None
+
     # --- oil / rates co-movement -----------------------------------------
     # "Oil and long yields rising together" is a specific, checkable pattern
     # (oil rebuilds inflation pressure -> long end sells off). Expose it as a

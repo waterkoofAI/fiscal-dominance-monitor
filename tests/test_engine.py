@@ -267,6 +267,38 @@ class TestOilFeatures(unittest.TestCase):
         self.assertEqual(f2["oil_yield_comove_5d"], -1.0, "both falling == -1")
 
 
+class TestPolicyExpectation(unittest.TestCase):
+    def _f(self, two_year, target=3.75):
+        p = mk_panel(
+            DGS2=daily("2026-01-01", [two_year] * 30),
+            DGS3MO=daily("2026-01-01", [target + 0.09] * 30),
+            DFEDTARU=daily("2026-01-01", [target] * 30),
+            DGS30=daily("2026-01-01", [5.2] * 30),
+        )
+        return features.compute_features(p, date(2026, 1, 30))
+
+    def test_hiking_detected(self):
+        f = self._f(4.20)
+        self.assertAlmostEqual(f["policy_spread_2y"], 0.45, places=2)
+        self.assertEqual(f["policy_expectation"], "hiking")
+
+    def test_cutting_detected(self):
+        self.assertEqual(self._f(3.30)["policy_expectation"], "cutting")
+
+    def test_on_hold_has_a_dead_band(self):
+        """Small spreads must read as on-hold, not flip between hike and cut."""
+        for y in (3.70, 3.75, 3.85):
+            self.assertEqual(self._f(y)["policy_expectation"], "on_hold")
+
+    def test_not_wired_into_scores(self):
+        """Same discipline as oil: new data must not silently reweight the model."""
+        for block in (config.FISCAL_STRESS, config.FINANCIAL_REPRESSION,
+                      config.DEBASEMENT, config.BTC_LIQUIDITY):
+            for k in block:
+                self.assertNotIn("policy_spread", k)
+                self.assertNotIn("policy_expectation", k)
+
+
 class TestNetLiquidity(unittest.TestCase):
     def test_unit_alignment(self):
         """WALCL/WTREGEN are $mn, RRPONTSYD is $bn. Getting this wrong is a 1000x error."""
