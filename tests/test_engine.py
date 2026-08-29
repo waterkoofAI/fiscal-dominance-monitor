@@ -241,6 +241,32 @@ class TestDeterminism(unittest.TestCase):
                          scores.compute_all(b, pol)["composite"])
 
 
+class TestOilFeatures(unittest.TestCase):
+    def test_oil_tracked_but_not_scored(self):
+        """Oil is data, not a score input — adding it must not silently reweight."""
+        self.assertIn("DCOILWTICO", config.FRED_SERIES)
+        for block in (config.FISCAL_STRESS, config.FINANCIAL_REPRESSION,
+                      config.DEBASEMENT, config.BTC_LIQUIDITY):
+            for k in block:
+                self.assertNotIn("oil", k.lower())
+                self.assertNotIn("wti", k.lower())
+
+    def test_comove_sign(self):
+        p = mk_panel(
+            DCOILWTICO=daily("2026-01-01", [80 + i for i in range(30)]),
+            DGS30=daily("2026-01-01", [5.0 + i * 0.01 for i in range(30)]),
+        )
+        f = features.compute_features(p, date(2026, 1, 30))
+        self.assertEqual(f["oil_yield_comove_5d"], 1.0, "both rising == +1")
+
+        p2 = mk_panel(
+            DCOILWTICO=daily("2026-01-01", [110 - i for i in range(30)]),
+            DGS30=daily("2026-01-01", [5.5 - i * 0.01 for i in range(30)]),
+        )
+        f2 = features.compute_features(p2, date(2026, 1, 30))
+        self.assertEqual(f2["oil_yield_comove_5d"], -1.0, "both falling == -1")
+
+
 class TestNetLiquidity(unittest.TestCase):
     def test_unit_alignment(self):
         """WALCL/WTREGEN are $mn, RRPONTSYD is $bn. Getting this wrong is a 1000x error."""
@@ -453,6 +479,23 @@ class TestNarrativeTracker(unittest.TestCase):
         self.assertEqual(out["refute_total"], 0)
         self.assertEqual(len(out["untestable"]), 2)
         self.assertEqual(out["status"], "unknown")
+
+    def test_level_units_are_unsigned(self):
+        """A 30Y level of 5.17% must not render as "+5.2%" — that reads as a move."""
+        self.assertEqual(narratives._fmt(5.17, "lvl%"), "5.17%")
+        self.assertEqual(narratives._fmt(0.25, "bp"), "+25bp")
+        self.assertEqual(narratives._fmt(3.0, "%"), "+3.0%")
+
+    def test_level_conditions_use_level_units(self):
+        """Any condition on a *_level feature must use an unsigned unit."""
+        for n in narratives.load():
+            for side in ("confirm", "refute"):
+                for c in n.get(side, []):
+                    feat = c.get("feature", "")
+                    if feat.endswith("_level"):
+                        self.assertTrue(c.get("unit", "").startswith("lvl"),
+                                        f"{n['id']}/{c.get('id')} on {feat} "
+                                        f"uses change unit {c.get('unit')!r}")
 
     def test_shipped_ledger_preregisters_both_sides(self):
         """Every stored narrative must carry refute conditions, not just confirms."""

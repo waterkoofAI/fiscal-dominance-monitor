@@ -151,7 +151,8 @@ def compute_features(p: Panel, when: date) -> dict:
     # --- levels -----------------------------------------------------------
     for sid in ("DGS30", "DGS10", "DGS5", "DGS2", "DGS3MO", "DFII10", "DFII30",
                 "DFII5", "T10YIE", "T5YIE", "T5YIFR", "THREEFYTP10", "DTWEXBGS",
-                "BAMLH0A0HYM2", "VIXCLS", "DFEDTARU", "GFDEGDQ188S"):
+                "BAMLH0A0HYM2", "VIXCLS", "DFEDTARU", "GFDEGDQ188S",
+                "DCOILWTICO", "DCOILBRENTEU"):
         lvl(sid)
     for sid in ("GOLD", "BTC", "DXY", "NDX", "SPX"):
         lvl(sid)
@@ -163,7 +164,8 @@ def compute_features(p: Panel, when: date) -> dict:
             f[f"{sid}_chg_{tag}"] = p.chg(sid, when, n)
 
     # --- price changes (percent) ------------------------------------------
-    for sid in ("GOLD", "BTC", "DXY", "NDX", "SPX", "DTWEXBGS"):
+    for sid in ("GOLD", "BTC", "DXY", "NDX", "SPX", "DTWEXBGS",
+                "DCOILWTICO", "DCOILBRENTEU"):
         for tag, n in (("5d", W["w1"]), ("20d", W["w4"]), ("60d", W["w12"]), ("252d", W["w52"])):
             f[f"{sid}_ret_{tag}"] = p.pct_chg(sid, when, n)
 
@@ -257,6 +259,19 @@ def compute_features(p: Panel, when: date) -> dict:
         f[f"{sid.lower()}_ath"] = ath
         f[f"{sid.lower()}_from_ath_pct"] = ((cur / ath - 1.0) * 100.0
                                             if (ath and cur) else None)
+
+    # --- oil / rates co-movement -----------------------------------------
+    # "Oil and long yields rising together" is a specific, checkable pattern
+    # (oil rebuilds inflation pressure -> long end sells off). Expose it as a
+    # single feature so a narrative can be tested against it directly.
+    oil5, y5 = f.get("DCOILWTICO_ret_5d"), f.get("DGS30_chg_5d")
+    oil20, y20 = f.get("DCOILWTICO_ret_20d"), f.get("DGS30_chg_20d")
+    f["oil_yield_comove_5d"] = (1.0 if (oil5 > 0 and y5 > 0) else
+                                (-1.0 if (oil5 < 0 and y5 < 0) else 0.0)) \
+        if (oil5 is not None and y5 is not None) else None
+    f["oil_yield_comove_20d"] = (1.0 if (oil20 > 0 and y20 > 0) else
+                                 (-1.0 if (oil20 < 0 and y20 < 0) else 0.0)) \
+        if (oil20 is not None and y20 is not None) else None
 
     # --- aliases used by the Stage-3 gate expressions ----------------------
     f["dfii10_chg_60d"] = f.get("DFII10_chg_60d")

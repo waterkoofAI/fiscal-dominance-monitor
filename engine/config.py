@@ -45,6 +45,12 @@ FRED_SERIES = {
     "WTREGEN":     {"label": "Treasury General Acct", "freq": "w", "release_lag_days": 2},
     "RRPONTSYD":   {"label": "Overnight Reverse Repo","freq": "d", "release_lag_days": 1},
     "WRESBAL":     {"label": "Reserve Balances",      "freq": "w", "release_lag_days": 2},
+    # --- energy: the oil -> inflation -> rates channel. Tracked and available
+    #     to narrative conditions, but deliberately NOT wired into the four
+    #     scores: changing score weights invalidates the backtest and the
+    #     sensitivity run, so that is a separate, deliberate exercise. ---
+    "DCOILWTICO":  {"label": "WTI Crude",              "freq": "d", "release_lag_days": 2},
+    "DCOILBRENTEU":{"label": "Brent Crude",            "freq": "d", "release_lag_days": 2},
     # --- risk / credit (used as gates, not as thesis evidence) ---
     "BAMLH0A0HYM2":{"label": "HY OAS",                "freq": "d", "release_lag_days": 1},
     "VIXCLS":      {"label": "VIX",                   "freq": "d", "release_lag_days": 1},

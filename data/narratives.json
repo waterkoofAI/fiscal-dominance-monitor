@@ -6,54 +6,289 @@
     "source_url": "https://x.com/Trader_S18",
     "recorded_at": "2026-08-23",
     "summary_cn": "主张：加密牛市推高稳定币流通量→制造短债结构性需求→为财政部压制长端供血→美元走弱→加密再涨。并称本轮是 BTC 独立牛而非全面风险牛，黄金是官方部门出口、BTC 是私人资本出口。",
-
     "confirm": [
-      {"id": "real_yield_down", "label_cn": "实际利率下行（机制核心要求）",
-       "feature": "DFII10_chg_60d", "op": "<", "value": -0.10, "unit": "bp"},
-      {"id": "term_premium_up", "label_cn": "期限溢价上行（市场在要财政风险溢价）",
-       "feature": "THREEFYTP10_chg_60d", "op": ">", "value": 0.10, "unit": "bp"},
-      {"id": "long_end_capped", "label_cn": "30Y 从高位回落（真的被封住）",
-       "feature": "DGS30_chg_60d", "op": "<", "value": -0.10, "unit": "bp"},
-      {"id": "dollar_weak", "label_cn": "美元实质走弱",
-       "feature": "dxy_chg_60d", "op": "<", "value": -2.0, "unit": "%"},
-      {"id": "debasement_pair", "label_cn": "金与 BTC 同涨（贬值交易特征）",
-       "all": [
-         {"id": "g", "label_cn": "黄金上涨", "feature": "GOLD_ret_60d", "op": ">", "value": 0.0, "unit": "%"},
-         {"id": "b", "label_cn": "BTC 上涨", "feature": "BTC_ret_60d", "op": ">", "value": 0.0, "unit": "%"}
-       ]},
-      {"id": "btc_独立牛", "label_cn": "BTC 明显强于股票（独立牛/轮动牛）",
-       "feature": "btc_minus_ndx_60d", "op": ">", "value": 10.0, "unit": "%"}
+      {
+        "id": "real_yield_down",
+        "label_cn": "实际利率下行（机制核心要求）",
+        "feature": "DFII10_chg_60d",
+        "op": "<",
+        "value": -0.1,
+        "unit": "bp"
+      },
+      {
+        "id": "term_premium_up",
+        "label_cn": "期限溢价上行（市场在要财政风险溢价）",
+        "feature": "THREEFYTP10_chg_60d",
+        "op": ">",
+        "value": 0.1,
+        "unit": "bp"
+      },
+      {
+        "id": "long_end_capped",
+        "label_cn": "30Y 从高位回落（真的被封住）",
+        "feature": "DGS30_chg_60d",
+        "op": "<",
+        "value": -0.1,
+        "unit": "bp"
+      },
+      {
+        "id": "dollar_weak",
+        "label_cn": "美元实质走弱",
+        "feature": "dxy_chg_60d",
+        "op": "<",
+        "value": -2.0,
+        "unit": "%"
+      },
+      {
+        "id": "debasement_pair",
+        "label_cn": "金与 BTC 同涨（贬值交易特征）",
+        "all": [
+          {
+            "id": "g",
+            "label_cn": "黄金上涨",
+            "feature": "GOLD_ret_60d",
+            "op": ">",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "id": "b",
+            "label_cn": "BTC 上涨",
+            "feature": "BTC_ret_60d",
+            "op": ">",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "btc_独立牛",
+        "label_cn": "BTC 明显强于股票（独立牛/轮动牛）",
+        "feature": "btc_minus_ndx_60d",
+        "op": ">",
+        "value": 10.0,
+        "unit": "%"
+      }
     ],
-
     "refute": [
-      {"id": "real_yield_up", "label_cn": "实际利率上行（与机制方向相反）",
-       "feature": "DFII10_chg_60d", "op": ">", "value": 0.10, "unit": "bp"},
-      {"id": "disinflation", "label_cn": "通胀实质回落（正常化路径而非财政主导）",
-       "feature": "cpi_yoy_trend_3m", "op": "<", "value": -0.30, "unit": "pp"},
-      {"id": "long_end_rising", "label_cn": "长端继续上行（没有被封住）",
-       "feature": "DGS30_chg_60d", "op": ">", "value": 0.15, "unit": "bp"},
-      {"id": "dollar_rebound", "label_cn": "美元反弹（贬值交易平仓）",
-       "feature": "dxy_chg_60d", "op": ">", "value": 2.0, "unit": "%"},
-      {"id": "btc_alone", "label_cn": "BTC 独涨而黄金下跌（非宏观贬值驱动）",
-       "all": [
-         {"id": "spread", "label_cn": "BTC 大幅跑赢黄金", "feature": "btc_minus_gold_60d", "op": ">", "value": 15.0, "unit": "%"},
-         {"id": "gold_down", "label_cn": "黄金下跌", "feature": "GOLD_ret_60d", "op": "<", "value": 0.0, "unit": "%"}
-       ]}
+      {
+        "id": "real_yield_up",
+        "label_cn": "实际利率上行（与机制方向相反）",
+        "feature": "DFII10_chg_60d",
+        "op": ">",
+        "value": 0.1,
+        "unit": "bp"
+      },
+      {
+        "id": "disinflation",
+        "label_cn": "通胀实质回落（正常化路径而非财政主导）",
+        "feature": "cpi_yoy_trend_3m",
+        "op": "<",
+        "value": -0.3,
+        "unit": "pp"
+      },
+      {
+        "id": "long_end_rising",
+        "label_cn": "长端继续上行（没有被封住）",
+        "feature": "DGS30_chg_60d",
+        "op": ">",
+        "value": 0.15,
+        "unit": "bp"
+      },
+      {
+        "id": "dollar_rebound",
+        "label_cn": "美元反弹（贬值交易平仓）",
+        "feature": "dxy_chg_60d",
+        "op": ">",
+        "value": 2.0,
+        "unit": "%"
+      },
+      {
+        "id": "btc_alone",
+        "label_cn": "BTC 独涨而黄金下跌（非宏观贬值驱动）",
+        "all": [
+          {
+            "id": "spread",
+            "label_cn": "BTC 大幅跑赢黄金",
+            "feature": "btc_minus_gold_60d",
+            "op": ">",
+            "value": 15.0,
+            "unit": "%"
+          },
+          {
+            "id": "gold_down",
+            "label_cn": "黄金下跌",
+            "feature": "GOLD_ret_60d",
+            "op": "<",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ]
+      }
     ],
-
     "untestable": [
       "政治时间表路径（8月激活→9月清杠杆→10月修复→11月3日前留好状态）。该结构可吸收任何结果：涨了算「中期利多」，9月跌了算「清理杠杆阶段」，没有观测能推翻它。",
       "川普家族需要流动性退出窗口 —— 动机归因，无法从市场数据检验。",
       "币圈交易所与美股方「事后迅速达成默契形成合力」—— 合谋/默契不可观测。",
       "「贝森特翻倍购买长债」—— 需要季度再融资公告原文核实；本仓库政策台账中相关条目仍为 verified:false。"
     ],
-
     "scale_checks": [
-      {"label_cn": "稳定币流通量", "value": "$291.6B", "note": "他称「三千亿上下」——准确（USDT 183.2 + USDC 73.5 + 其余）"},
-      {"label_cn": "短债（Bills）存量", "value": "$6.99T", "note": "美国财政部 MSPD 2026-07-31；可交易国债合计 $31.43T"},
-      {"label_cn": "稳定币占短债市场", "value": "4.2%", "note": "全部存量，非增量"},
-      {"label_cn": "一轮牛市新增占比", "value": "0.7%–1.4%", "note": "按他自己估的「几百亿」计"},
-      {"label_cn": "对照：RRP 排空量", "value": "$2,553.7B", "note": "2022-12-30 峰值 → 今日 $0.2B。稳定币全部存量仅为其 11%，牛市增量仅 2%–4%。机制方向为真，但量级不足以成为封长端的关键变量。"}
+      {
+        "label_cn": "稳定币流通量",
+        "value": "$291.6B",
+        "note": "他称「三千亿上下」——准确（USDT 183.2 + USDC 73.5 + 其余）"
+      },
+      {
+        "label_cn": "短债（Bills）存量",
+        "value": "$6.99T",
+        "note": "美国财政部 MSPD 2026-07-31；可交易国债合计 $31.43T"
+      },
+      {
+        "label_cn": "稳定币占短债市场",
+        "value": "4.2%",
+        "note": "全部存量，非增量"
+      },
+      {
+        "label_cn": "一轮牛市新增占比",
+        "value": "0.7%–1.4%",
+        "note": "按他自己估的「几百亿」计"
+      },
+      {
+        "label_cn": "对照：RRP 排空量",
+        "value": "$2,553.7B",
+        "note": "2022-12-30 峰值 → 今日 $0.2B。稳定币全部存量仅为其 11%，牛市增量仅 2%–4%。机制方向为真，但量级不足以成为封长端的关键变量。"
+      }
+    ]
+  },
+  {
+    "id": "trader-bessent-520-testline-2026-08",
+    "title": "5.20% 是对贝森特的政策测试线",
+    "source": "交易員，執筆全球市场（转发）",
+    "source_url": "",
+    "recorded_at": "2026-08-27",
+    "summary_cn": "主张：30Y 正无限逼近 5.20%，市场正把该水平变成事实上的「政策测试线」，等于向财政部宣战；若在回购扩容与 TGA 放风之后 30Y 仍重新突破 5.20%，意义将非常不同。核心危险组合是「油价与美债收益率同步上涨」→ 通胀压力重来 → 长端遭抛售 → 美元获支撑 → 黄金承压。",
+    "confirm": [
+      {
+        "id": "y30_above_520",
+        "label_cn": "30Y 站上 5.20%（测试线被突破）",
+        "feature": "DGS30_level",
+        "op": ">=",
+        "value": 5.2,
+        "unit": "lvl%"
+      },
+      {
+        "id": "oil_yield_up",
+        "label_cn": "油价与长端同步上涨（他的核心危险组合）",
+        "feature": "oil_yield_comove_5d",
+        "op": ">",
+        "value": 0.5,
+        "unit": ""
+      },
+      {
+        "id": "gold_pressured",
+        "label_cn": "黄金承压",
+        "feature": "GOLD_ret_5d",
+        "op": "<",
+        "value": 0.0,
+        "unit": "%"
+      },
+      {
+        "id": "usd_supported",
+        "label_cn": "美元获得支撑",
+        "feature": "DXY_ret_5d",
+        "op": ">",
+        "value": 0.0,
+        "unit": "%"
+      },
+      {
+        "id": "tp_up",
+        "label_cn": "期限溢价上行（市场在要财政风险溢价）",
+        "feature": "THREEFYTP10_chg_20d",
+        "op": ">",
+        "value": 0.05,
+        "unit": "bp"
+      }
+    ],
+    "refute": [
+      {
+        "id": "y30_below_520",
+        "label_cn": "30Y 回落至 5.20% 下方",
+        "feature": "DGS30_level",
+        "op": "<",
+        "value": 5.2,
+        "unit": "lvl%"
+      },
+      {
+        "id": "oil_yield_down",
+        "label_cn": "油价与长端同步下跌（危险组合解除）",
+        "feature": "oil_yield_comove_5d",
+        "op": "<",
+        "value": -0.5,
+        "unit": ""
+      },
+      {
+        "id": "gold_strong",
+        "label_cn": "黄金不承压反而明显上涨",
+        "feature": "GOLD_ret_5d",
+        "op": ">",
+        "value": 1.0,
+        "unit": "%"
+      },
+      {
+        "id": "long_end_falling",
+        "label_cn": "长端收益率在下行",
+        "feature": "DGS30_chg_5d",
+        "op": "<",
+        "value": -0.05,
+        "unit": "bp"
+      },
+      {
+        "id": "tp_down",
+        "label_cn": "期限溢价不涨反跌",
+        "feature": "THREEFYTP10_chg_20d",
+        "op": "<",
+        "value": 0.0,
+        "unit": "bp"
+      }
+    ],
+    "untestable": [
+      "「5.20% 是贝森特事实上的收益率上限/政策测试线」—— 从未被公开宣布，无法验证它是否存在。更关键的是：30Y 已于 2026-07-29 上穿该水平，此后 19 个交易日中有 13 日收于其上方（峰值 5.31%，08-17），未见任何可观测的政策回应。若这条线存在，它早该被触发过了。",
+      "「债券市场在向财政部宣战」「我知道你要买，但我还是要卖」—— 对市场参与者意图的拟人化归因，不可观测。",
+      "《倾国之战》第二幕「世界将发生两个重大变化」是什么 —— 付费报告的诱饵式提问，无确定答案；任何回答都是编造。",
+      "「决定黄金和美元下一轮命运的三个数字」—— 同上，不存在正典答案。",
+      "「财政部在长端失控之后扩大了回购」—— 需季度再融资公告原文核实；本仓库政策台账中相关条目仍为 verified:false。"
+    ],
+    "scale_checks": [
+      {
+        "label_cn": "30Y 首次上穿 5.20%",
+        "value": "2026-07-29",
+        "note": "不是「正在逼近」，是一个月前就上去了"
+      },
+      {
+        "label_cn": "此后收于 5.20% 上方",
+        "value": "13/19 个交易日",
+        "note": "占 68%，期间未见政策回应"
+      },
+      {
+        "label_cn": "区间峰值",
+        "value": "5.31% (08-17)",
+        "note": "已远高于所谓「测试线」"
+      },
+      {
+        "label_cn": "当前 30Y",
+        "value": "5.17% (08-25)",
+        "note": "已回落至线下，五日 −11bp"
+      },
+      {
+        "label_cn": "≥5.20% 历史天数",
+        "value": "全历史 241 天",
+        "note": "2023 年至今 13 天，全部集中在 2026-07-29 之后；历史最高 5.61%（2004-05-13）"
+      },
+      {
+        "label_cn": "WTI 原油",
+        "value": "$83.90 (08-25)",
+        "note": "五日 −3.0%（87.3→83.9），与「油价重新上涨」相反"
+      }
     ]
   }
 ]

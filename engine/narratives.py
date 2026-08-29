@@ -44,6 +44,11 @@ def load() -> list[dict]:
 
 
 def _fmt(value: float | None, unit: str) -> str:
+    """
+    Change-like units get a sign; LEVEL units must not. Rendering a 30Y level
+    of 5.17% as "+5.2%" reads as a move, not a level, and that is exactly the
+    number the reader is trying to compare against a threshold.
+    """
     if value is None:
         return "n/a"
     if unit == "bp":
@@ -52,6 +57,10 @@ def _fmt(value: float | None, unit: str) -> str:
         return f"{value:+.2f}pp"
     if unit == "%":
         return f"{value:+.1f}%"
+    if unit == "lvl%":                       # a level, not a change
+        return f"{value:.2f}%"
+    if unit == "lvl$":
+        return f"${value:,.0f}"
     if unit == "pt":
         return f"{value:.1f}"
     return f"{value:+.2f}"

@@ -279,6 +279,8 @@ def _key_metrics(f: dict, p: Panel, when: date, spot: dict | None) -> list[dict]
             f.get("BTC_ret_5d"), "%", "https://www.coingecko.com/en/coins/bitcoin"),
         row("btcgold", "BTC/黄金 比价", "BTC", f.get("btc_gold_ratio"), "",
             f.get("btc_gold_ratio_chg_20d_pct"), "%", ""),
+        row("wti", "WTI 原油", "DCOILWTICO", f.get("DCOILWTICO_level"), "$",
+            f.get("DCOILWTICO_ret_5d"), "%", F + "DCOILWTICO"),
         row("netliq", "净流动性", "WALCL", 
             (f.get("net_liquidity_musd") or 0) / 1e6 if f.get("net_liquidity_musd") else None,
             "T$", f.get("net_liquidity_chg_60d_pct"), "%", F + "WALCL"),
