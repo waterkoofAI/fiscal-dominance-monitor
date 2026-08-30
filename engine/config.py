@@ -38,6 +38,14 @@ FRED_SERIES = {
     "CPILFESL":    {"label": "Core CPI",              "freq": "m", "release_lag_days": 14},
     "PCEPI":       {"label": "PCE",                   "freq": "m", "release_lag_days": 30},
     "PCEPILFE":    {"label": "Core PCE",              "freq": "m", "release_lag_days": 30},
+    # --- labour market: the other half of the Fed reaction function. The
+    #     monitor could see prices and rates but not employment, which made a
+    #     whole class of claims ("the Fed has stopped reacting to payrolls")
+    #     untestable. Tracked only — not wired into any score. ---
+    "PAYEMS":      {"label": "Nonfarm Payrolls",       "freq": "m", "release_lag_days": 5},
+    "UNRATE":      {"label": "Unemployment Rate",      "freq": "m", "release_lag_days": 5},
+    "ICSA":        {"label": "Initial Claims",         "freq": "w", "release_lag_days": 5},
+    "CCSA":        {"label": "Continuing Claims",      "freq": "w", "release_lag_days": 12},
     # --- policy rate & Fed balance sheet ---
     "FEDFUNDS":    {"label": "Fed Funds (eff, avg)",  "freq": "m", "release_lag_days": 2},
     "DFEDTARU":    {"label": "Fed Target Upper",      "freq": "d", "release_lag_days": 1},

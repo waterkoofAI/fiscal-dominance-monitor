@@ -260,6 +260,22 @@ def compute_features(p: Panel, when: date) -> dict:
         f[f"{sid.lower()}_from_ath_pct"] = ((cur / ath - 1.0) * 100.0
                                             if (ath and cur) else None)
 
+    # --- labour market ----------------------------------------------------
+    i = p._idx_asof("PAYEMS", when)
+    if i is not None and i >= 1:
+        v = p.values["PAYEMS"]
+        f["payems_chg_1m"] = (v[i] - v[i - 1]) * 1000.0        # persons
+        if i >= 3:
+            f["payems_avg3m"] = (v[i] - v[i - 3]) / 3.0 * 1000.0
+        else:
+            f["payems_avg3m"] = None
+    else:
+        f["payems_chg_1m"] = f["payems_avg3m"] = None
+    f["unrate_level"] = p.asof("UNRATE", when)
+    f["unrate_chg_3m"] = p.chg("UNRATE", when, 3)
+    f["icsa_level"] = p.asof("ICSA", when)
+    f["icsa_chg_4w"] = p.chg("ICSA", when, 4)
+
     # --- market-implied policy direction ----------------------------------
     # The front end versus the current target is a free, transparent read on
     # whether the market expects the Fed to hike or cut. It matters here for a
@@ -279,6 +295,20 @@ def compute_features(p: Panel, when: date) -> dict:
     else:
         f["policy_spread_3m"] = f["policy_spread_2y"] = None
         f["policy_expectation"] = None
+
+    # Change in hike pricing. This is what makes "the Fed stopped reacting to
+    # payrolls" a testable claim rather than a vibe: weak employment landing
+    # WITHOUT hike pricing falling is the observable signature of the reaction
+    # function having moved.
+    for tag, n in (("5d", W["w1"]), ("20d", W["w4"])):
+        a, b = p.asof("DGS2", when), p.asof("DFEDTARU", when)
+        j = p._idx_back("DGS2", when, n)
+        k = p._idx_back("DFEDTARU", when, n)
+        if None not in (a, b) and j is not None and k is not None:
+            f[f"policy_spread_2y_chg_{tag}"] = (a - b) - (p.values["DGS2"][j]
+                                                          - p.values["DFEDTARU"][k])
+        else:
+            f[f"policy_spread_2y_chg_{tag}"] = None
 
     # --- oil / rates co-movement -----------------------------------------
     # "Oil and long yields rising together" is a specific, checkable pattern
