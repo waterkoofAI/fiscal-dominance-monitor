@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-01T00:39:08.316307+00:00",
- "as_of": "2026-11-01",
+ "generated_at": "2026-11-02T01:12:10.346065+00:00",
+ "as_of": "2026-11-02",
  "stage": 1,
  "stage_raw": 1,
  "stage_name": "Fiscal Stress",
@@ -33,9 +33,9 @@
    "color": "#a457e8"
   }
  },
- "composite": 20.4,
+ "composite": 20.7,
  "driver_composite": 17.9,
- "confirmation_composite": 16.1,
+ "confirmation_composite": 16.7,
  "scores": {
   "fiscal_stress": {
    "score": 44.7,
@@ -102,9 +102,9 @@
    }
   },
   "financial_repression": {
-   "score": 2.5,
+   "score": 2.4,
    "driver_score": 2.7,
-   "confirmation_score": 1.1,
+   "confirmation_score": 0.0,
    "coverage_pct": 100.0,
    "components": {
     "real_yield_level": {
@@ -143,45 +143,45 @@
      "kind": "driver"
     },
     "dollar_debase": {
-     "points": 0.13,
+     "points": 0.0,
      "max": 12.0,
-     "note": "dollar +1.9% over 60d",
+     "note": "dollar +2.3% over 60d",
      "missing": false,
      "kind": "confirmation"
     }
    }
   },
   "debasement": {
-   "score": 6.8,
+   "score": 6.9,
    "driver_score": 11.9,
-   "confirmation_score": 4.8,
+   "confirmation_score": 4.9,
    "coverage_pct": 100.0,
    "components": {
     "dxy_trend": {
-     "points": 0.18,
+     "points": 0.0,
      "max": 18.0,
-     "note": "dollar +1.9% / 60d",
+     "note": "dollar +2.3% / 60d",
      "missing": false,
      "kind": "confirmation"
     },
     "gold_trend": {
      "points": 0.0,
      "max": 20.0,
-     "note": "gold -9.3% / 60d",
+     "note": "gold -11.3% / 60d",
      "missing": false,
      "kind": "confirmation"
     },
     "gold_ath_proximity": {
      "points": 0.0,
      "max": 10.0,
-     "note": "gold -26.7% from ATH",
+     "note": "gold -26.6% from ATH",
      "missing": false,
      "kind": "confirmation"
     },
     "btc_trend": {
-     "points": 3.27,
+     "points": 3.56,
      "max": 14.0,
-     "note": "BTC +0.1% / 60d",
+     "note": "BTC +1.2% / 60d",
      "missing": false,
      "kind": "confirmation"
     },
@@ -209,9 +209,9 @@
    }
   },
   "btc_liquidity": {
-   "score": 30.4,
+   "score": 32.0,
    "driver_score": 12.3,
-   "confirmation_score": 42.5,
+   "confirmation_score": 45.2,
    "coverage_pct": 100.0,
    "components": {
     "net_liquidity_trend": {
@@ -229,30 +229,30 @@
      "kind": "driver"
     },
     "dxy_direction": {
-     "points": 2.18,
+     "points": 1.31,
      "max": 14.0,
-     "note": "dollar +1.9% / 60d",
+     "note": "dollar +2.3% / 60d",
      "missing": false,
      "kind": "confirmation"
     },
     "btc_trend_20d": {
-     "points": 2.67,
+     "points": 3.75,
      "max": 14.0,
-     "note": "BTC -7.4% / 20d",
+     "note": "BTC -4.3% / 20d",
      "missing": false,
      "kind": "confirmation"
     },
     "btc_vs_gold": {
-     "points": 8.38,
+     "points": 9.44,
      "max": 12.0,
-     "note": "BTC +9.5pp vs gold / 60d",
+     "note": "BTC +12.5pp vs gold / 60d",
      "missing": false,
      "kind": "confirmation"
     },
     "btc_vs_ndx": {
-     "points": 5.29,
+     "points": 5.6,
      "max": 10.0,
-     "note": "BTC +3.5pp vs Nasdaq / 60d",
+     "note": "BTC +4.6pp vs Nasdaq / 60d",
      "missing": false,
      "kind": "confirmation"
     },
@@ -301,8 +301,8 @@
      "delta": 1,
      "arrow": "↑"
     },
-    "days_held": 33,
-    "summary_cn": "已在「中性」维持 33 个交易日，无变化"
+    "days_held": 34,
+    "summary_cn": "已在「中性」维持 34 个交易日，无变化"
    }
   },
   "btc": {
@@ -312,7 +312,7 @@
    "signal_cn": "谨慎",
    "emoji": "🟡",
    "index": 2,
-   "reason": "BTC流动性分 30，阶段基线 中性",
+   "reason": "BTC流动性分 32，阶段基线 中性",
    "posture": {
     "action_cn": "降低风险",
     "action_en": "De-risk",
@@ -339,7 +339,7 @@
      "delta": 0,
      "arrow": "→"
     },
-    "days_held": 7,
+    "days_held": 8,
     "summary_cn": "过去20个交易日从「偏多」下调至「谨慎」，宏观理由在减弱"
    }
   },
@@ -377,7 +377,7 @@
      "delta": 0,
      "arrow": "→"
     },
-    "days_held": 7,
+    "days_held": 8,
     "summary_cn": "过去20个交易日从「偏空」上调至「谨慎」，宏观理由在增强"
    }
   },
@@ -415,7 +415,7 @@
      "delta": 0,
      "arrow": "→"
     },
-    "days_held": 7,
+    "days_held": 8,
     "summary_cn": "过去20个交易日从「谨慎」上调至「中性」，宏观理由在增强"
    }
   }
@@ -437,7 +437,7 @@
     "key": "dollar_weak",
     "label_cn": "美元转弱",
     "passed": false,
-    "detail": "美元 60日 +1.9%",
+    "detail": "美元 60日 +2.3%",
     "target": "< 0%"
    },
    {
@@ -458,7 +458,7 @@
     "key": "btc_gold_breakout",
     "label_cn": "BTC/黄金比价 20日走强",
     "passed": false,
-    "detail": "BTC/黄金比价 20日 -2.1%",
+    "detail": "BTC/黄金比价 20日 -1.5%",
     "target": "> 0%"
    },
    {
@@ -541,13 +541,13 @@
     "key": "dollar_weakening",
     "label_cn": "美元走弱",
     "passed": false,
-    "actual": 1.9105691801465152,
+    "actual": 2.3443766267520205,
     "target": "美元 60日 < 0%",
-    "detail": "实际 +1.9%",
+    "detail": "实际 +2.3%",
     "threshold": 0.0,
     "direction": "<",
     "unit": "%",
-    "gap": 1.9105691801465152
+    "gap": 2.3443766267520205
    }
   ],
   "done": 3,
@@ -584,35 +584,35 @@
    "label_cn": "美元走弱",
    "unit": "%",
    "direction": "<",
-   "actual": 1.9105691801465152,
+   "actual": 2.3443766267520205,
    "threshold": 0.0,
-   "need": 1.9105691801465152,
-   "distance": 1.9105691801465152,
+   "need": 2.3443766267520205,
+   "distance": 2.3443766267520205,
    "primary_met": false,
-   "need_cn": "还差 1.91%"
+   "need_cn": "还差 2.34%"
   }
  ],
  "scenarios": {
   "weights": {
-   "normalisation": 27.8,
-   "fiscal_dominance": 39.8,
-   "financial_repression": 17.9,
+   "normalisation": 27.7,
+   "fiscal_dominance": 39.7,
+   "financial_repression": 17.2,
    "qe_ycc": 4.1,
-   "debt_crisis": 10.4
+   "debt_crisis": 11.4
   },
   "raw": {
    "normalisation": 0.403,
    "fiscal_dominance": 0.577,
-   "financial_repression": 0.26,
+   "financial_repression": 0.25,
    "qe_ycc": 0.06,
-   "debt_crisis": 0.151
+   "debt_crisis": 0.165
   },
   "ranked": [
    {
     "key": "fiscal_dominance",
     "name_cn": "财政主导",
     "color": "#e8873a",
-    "pct": 39.8,
+    "pct": 39.7,
     "conditions": [
      {
       "label_cn": "长端处于高位",
@@ -650,7 +650,7 @@
     "key": "normalisation",
     "name_cn": "正常化",
     "color": "#2ea043",
-    "pct": 27.8,
+    "pct": 27.7,
     "conditions": [
      {
       "label_cn": "通胀在回落",
@@ -683,7 +683,7 @@
     "key": "financial_repression",
     "name_cn": "金融压抑",
     "color": "#e5484d",
-    "pct": 17.9,
+    "pct": 17.2,
     "conditions": [
      {
       "label_cn": "实际利率在下行",
@@ -707,8 +707,8 @@
      },
      {
       "label_cn": "美元走弱",
-      "value": 0.07859077598046464,
-      "detail": "美元 60日 +1.9%"
+      "value": 0.020749783099730596,
+      "detail": "美元 60日 +2.3%"
      },
      {
       "label_cn": "已有压抑性政策动作",
@@ -721,7 +721,7 @@
     "key": "debt_crisis",
     "name_cn": "债务危机",
     "color": "#f0f0f0",
-    "pct": 10.4,
+    "pct": 11.4,
     "conditions": [
      {
       "label_cn": "长端失控上行",
@@ -745,8 +745,8 @@
      },
      {
       "label_cn": "避险失灵（美元与黄金同向异动）",
-      "value": 0.48509486335775254,
-      "detail": "美元 +1.9% / 黄金 -9.3%"
+      "value": 0.55739610445867,
+      "detail": "美元 +2.3% / 黄金 -11.3%"
      }
     ]
    },
@@ -824,8 +824,8 @@
       "id": "dollar_weak",
       "label_cn": "美元实质走弱",
       "passed": false,
-      "detail": "+1.9%（需 < -2.0%）",
-      "actual": 1.9105691801465152,
+      "detail": "+2.3%（需 < -2.0%）",
+      "actual": 2.3443766267520205,
       "target": "< -2.0",
       "unit": "%"
      },
@@ -833,14 +833,14 @@
       "id": "debasement_pair",
       "label_cn": "金与 BTC 同涨（贬值交易特征）",
       "passed": false,
-      "detail": "-9.3%（需 > +0.0%） / +0.1%（需 > +0.0%）",
+      "detail": "-11.3%（需 > +0.0%） / +1.2%（需 > +0.0%）",
       "sub": [
        {
         "id": "g",
         "label_cn": "黄金上涨",
         "passed": false,
-        "detail": "-9.3%（需 > +0.0%）",
-        "actual": -9.319475909653207,
+        "detail": "-11.3%（需 > +0.0%）",
+        "actual": -11.303049546389099,
         "target": "> 0.0",
         "unit": "%"
        },
@@ -848,8 +848,8 @@
         "id": "b",
         "label_cn": "BTC 上涨",
         "passed": true,
-        "detail": "+0.1%（需 > +0.0%）",
-        "actual": 0.1360562893533812,
+        "detail": "+1.2%（需 > +0.0%）",
+        "actual": 1.2257565116482905,
         "target": "> 0.0",
         "unit": "%"
        }
@@ -860,8 +860,8 @@
       "id": "btc_独立牛",
       "label_cn": "BTC 明显强于股票（独立牛/轮动牛）",
       "passed": false,
-      "detail": "+3.5%（需 > +10.0%）",
-      "actual": 3.501287490994165,
+      "detail": "+4.6%（需 > +10.0%）",
+      "actual": 4.590987713289074,
       "target": "> 10.0",
       "unit": "%"
      }
@@ -897,9 +897,9 @@
      {
       "id": "dollar_rebound",
       "label_cn": "美元反弹（贬值交易平仓）",
-      "passed": false,
-      "detail": "+1.9%（需 > +2.0%）",
-      "actual": 1.9105691801465152,
+      "passed": true,
+      "detail": "+2.3%（需 > +2.0%）",
+      "actual": 2.3443766267520205,
       "target": "> 2.0",
       "unit": "%"
      },
@@ -907,14 +907,14 @@
       "id": "btc_alone",
       "label_cn": "BTC 独涨而黄金下跌（非宏观贬值驱动）",
       "passed": false,
-      "detail": "+9.5%（需 > +15.0%） / -9.3%（需 < +0.0%）",
+      "detail": "+12.5%（需 > +15.0%） / -11.3%（需 < +0.0%）",
       "sub": [
        {
         "id": "spread",
         "label_cn": "BTC 大幅跑赢黄金",
         "passed": false,
-        "detail": "+9.5%（需 > +15.0%）",
-        "actual": 9.455532199006587,
+        "detail": "+12.5%（需 > +15.0%）",
+        "actual": 12.52880605803739,
         "target": "> 15.0",
         "unit": "%"
        },
@@ -922,8 +922,8 @@
         "id": "gold_down",
         "label_cn": "黄金下跌",
         "passed": true,
-        "detail": "-9.3%（需 < +0.0%）",
-        "actual": -9.319475909653207,
+        "detail": "-11.3%（需 < +0.0%）",
+        "actual": -11.303049546389099,
         "target": "< 0.0",
         "unit": "%"
        }
@@ -933,10 +933,10 @@
     ],
     "confirm_hit": 1,
     "confirm_total": 6,
-    "refute_hit": 1,
+    "refute_hit": 2,
     "refute_total": 5,
     "confirm_frac": 17.0,
-    "refute_frac": 20.0,
+    "refute_frac": 40.0,
     "status": "neutral",
     "status_cn": "尚未定论",
     "untestable": [
@@ -1003,17 +1003,17 @@
       "id": "gold_pressured",
       "label_cn": "黄金承压",
       "passed": true,
-      "detail": "-2.7%（需 < +0.0%）",
-      "actual": -2.7196287995181367,
+      "detail": "-3.4%（需 < +0.0%）",
+      "actual": -3.3676704459375206,
       "target": "< 0.0",
       "unit": "%"
      },
      {
       "id": "usd_supported",
       "label_cn": "美元获得支撑",
-      "passed": true,
-      "detail": "+0.1%（需 > +0.0%）",
-      "actual": 0.06875522689600011,
+      "passed": false,
+      "detail": "-0.0%（需 > +0.0%）",
+      "actual": -0.024520916146919536,
       "target": "> 0.0",
       "unit": "%"
      },
@@ -1050,8 +1050,8 @@
       "id": "gold_strong",
       "label_cn": "黄金不承压反而明显上涨",
       "passed": false,
-      "detail": "-2.7%（需 > +1.0%）",
-      "actual": -2.7196287995181367,
+      "detail": "-3.4%（需 > +1.0%）",
+      "actual": -3.3676704459375206,
       "target": "> 1.0",
       "unit": "%"
      },
@@ -1074,14 +1074,14 @@
       "unit": "bp"
      }
     ],
-    "confirm_hit": 3,
+    "confirm_hit": 2,
     "confirm_total": 5,
     "refute_hit": 1,
     "refute_total": 5,
-    "confirm_frac": 60.0,
+    "confirm_frac": 40.0,
     "refute_frac": 20.0,
-    "status": "confirmed",
-    "status_cn": "正在被证实",
+    "status": "neutral",
+    "status_cn": "尚未定论",
     "untestable": [
      "「5.20% 是贝森特事实上的收益率上限/政策测试线」—— 从未被公开宣布，无法验证它是否存在。更关键的是：30Y 已于 2026-07-29 上穿该水平，此后 19 个交易日中有 13 日收于其上方（峰值 5.31%，08-17），未见任何可观测的政策回应。若这条线存在，它早该被触发过了。",
      "「债券市场在向财政部宣战」「我知道你要买，但我还是要卖」—— 对市场参与者意图的拟人化归因，不可观测。",
@@ -1348,7 +1348,7 @@
     "name_cn": "美元大涨 + 金/BTC 双杀",
     "active": false,
     "severity": 0.0,
-    "evidence": "美元 +1.9% / 黄金 -9.3% / BTC +0.1%",
+    "evidence": "美元 +2.3% / 黄金 -11.3% / BTC +1.2%",
     "implication_cn": "贬值交易在平仓，可能是美元流动性收紧。此时 BTC/黄金的宏观理由不成立。"
    },
    {
@@ -1356,7 +1356,7 @@
     "name_cn": "BTC 独涨（非宏观驱动）",
     "active": false,
     "severity": 0.0,
-    "evidence": "BTC +0.1% / 黄金 -9.3% / 实际利率 +23bp / 美元 +1.9%",
+    "evidence": "BTC +1.2% / 黄金 -11.3% / 实际利率 +23bp / 美元 +2.3%",
     "implication_cn": "BTC 上涨来自加密圈内部流动性而非宏观贬值。别把这波涨幅记在宏观假设头上。"
    },
    {
@@ -1364,7 +1364,7 @@
     "name_cn": "驱动与市场确认背离",
     "active": false,
     "severity": 0.0,
-    "evidence": "驱动分 18 vs 市场确认分 16（差 +2）",
+    "evidence": "驱动分 18 vs 市场确认分 17（差 +1）",
     "implication_cn": "宏观驱动已具备但市场未确认：要么你早了，要么驱动读错了。"
    }
   ],
@@ -1373,19 +1373,19 @@
   "thesis_penalty": 0.0
  },
  "stability": {
-  "days_in_stage": 9,
+  "days_in_stage": 10,
   "flips_90d": 2,
   "trustworthy": true
  },
  "confidence": {
-  "confidence": 92.6,
-  "penalty": 7.4,
+  "confidence": 89.4,
+  "penalty": 10.6,
   "notes": [
-   "THREEFYTP10 滞后 9 天（正常上限 8 天）−2"
+   "THREEFYTP10 滞后 10 天（正常上限 8 天）−4"
   ]
  },
  "narrative": {
-  "date": "2026-11-01",
+  "date": "2026-11-02",
   "headline": "Stage 1 — 财政压力（Fiscal Stress）",
   "today": [
    {
@@ -1411,32 +1411,32 @@
    },
    {
     "label": "美元 DXY",
-    "value": "101.88",
-    "change": "+0.1%",
-    "arrow": "↑",
-    "raw_change": 0.06875522689600011
+    "value": "101.93",
+    "change": "-0.0%",
+    "arrow": "↓",
+    "raw_change": -0.024520916146919536
    },
    {
     "label": "黄金",
-    "value": "$3,899",
-    "change": "-2.7%",
+    "value": "$3,902",
+    "change": "-3.4%",
     "arrow": "↓",
-    "raw_change": -2.7196287995181367
+    "raw_change": -3.3676704459375206
    },
    {
     "label": "BTC",
-    "value": "$77,509",
-    "change": "-3.1%",
+    "value": "$78,248",
+    "change": "-3.2%",
     "arrow": "↓",
-    "raw_change": -3.1218886866053674
+    "raw_change": -3.164511435214956
    }
   ],
   "movers": [
-   "btc_liquidity·btc_vs_gold +0.6分（BTC +9.5pp vs gold / 60d）",
-   "btc_liquidity·btc_vs_ndx +0.5分（BTC +3.5pp vs Nasdaq / 60d）",
-   "debasement·btc_trend +0.5分（BTC +0.1% / 60d）"
+   "btc_liquidity·btc_trend_20d +1.1分（BTC -4.3% / 20d）",
+   "btc_liquidity·btc_vs_gold +1.1分（BTC +12.5pp vs gold / 60d）",
+   "btc_liquidity·dxy_direction -0.9分（dollar +2.3% / 60d）"
   ],
-  "verdict": "当前处于 Stage 1（财政压力），综合 20/100。驱动 18 与市场确认 16 大体一致。市场在定价加息（2年期高出政策利率上限 61bp）。这对金融压抑论是结构性不利：压抑要求联储被财政绑住并压低实际利率，而定价加息说明联储仍在主张独立性。长端归因：真实利率上行主导——普通的实际利率重定价，非财政溢价。距离 Stage 2（财政主导观察）：尚缺：财政压力分 45 未达 55（辅助条件 3 项已达标，需 2 项）。当前无反向信号触发。该阶段已持续 9 天。",
+  "verdict": "当前处于 Stage 1（财政压力），综合 21/100。驱动 18 与市场确认 17 大体一致。市场在定价加息（2年期高出政策利率上限 61bp）。这对金融压抑论是结构性不利：压抑要求联储被财政绑住并压低实际利率，而定价加息说明联储仍在主张独立性。长端归因：真实利率上行主导——普通的实际利率重定价，非财政溢价。距离 Stage 2（财政主导观察）：尚缺：财政压力分 45 未达 55（辅助条件 3 项已达标，需 2 项）。当前无反向信号触发。该阶段已持续 10 天。",
   "strategy": [
    {
     "stage_note": "财政压力显现：黄金开始有配置理由，长久期美债降低。",
@@ -1451,7 +1451,7 @@
       "asset_cn": "BTC",
       "signal_cn": "谨慎",
       "emoji": "🟡",
-      "reason": "BTC流动性分 30，阶段基线 中性"
+      "reason": "BTC流动性分 32，阶段基线 中性"
      },
      {
       "asset_cn": "长久期美债",
@@ -1496,7 +1496,7 @@
    "change": 0.03000000000000025,
    "change_unit": "bp",
    "as_of": "2026-10-29",
-   "stale_days": 3,
+   "stale_days": 4,
    "source_url": "https://fred.stlouisfed.org/series/DGS30"
   },
   {
@@ -1508,7 +1508,7 @@
    "change": -0.010000000000000231,
    "change_unit": "bp",
    "as_of": "2026-10-29",
-   "stale_days": 3,
+   "stale_days": 4,
    "source_url": "https://fred.stlouisfed.org/series/DFII10"
   },
   {
@@ -1520,7 +1520,7 @@
    "change": -0.049900000000000055,
    "change_unit": "bp",
    "as_of": "2026-10-23",
-   "stale_days": 9,
+   "stale_days": 10,
    "source_url": "https://fred.stlouisfed.org/series/THREEFYTP10"
   },
   {
@@ -1532,7 +1532,7 @@
    "change": 0.020000000000000018,
    "change_unit": "bp",
    "as_of": "2026-10-30",
-   "stale_days": 2,
+   "stale_days": 3,
    "source_url": "https://fred.stlouisfed.org/series/T5YIFR"
   },
   {
@@ -1544,42 +1544,42 @@
    "change": 0.2967804200391555,
    "change_unit": "pp",
    "as_of": "2026-09-01",
-   "stale_days": 61,
+   "stale_days": 62,
    "source_url": "https://fred.stlouisfed.org/series/CPIAUCSL"
   },
   {
    "key": "dxy",
    "label": "美元 DXY",
    "series": "DXY",
-   "value": 101.87999725341797,
+   "value": 101.93499755859375,
    "unit": "",
-   "change": 0.06875522689600011,
+   "change": -0.024520916146919536,
    "change_unit": "%",
-   "as_of": "2026-10-30",
-   "stale_days": 2,
+   "as_of": "2026-11-02",
+   "stale_days": 0,
    "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB"
   },
   {
    "key": "gold",
    "label": "黄金",
    "series": "GOLD",
-   "value": 3898.89990234375,
+   "value": 3902.39990234375,
    "unit": "$",
-   "change": -2.7196287995181367,
+   "change": -3.3676704459375206,
    "change_unit": "%",
-   "as_of": "2026-10-30",
-   "stale_days": 2,
+   "as_of": "2026-11-02",
+   "stale_days": 0,
    "source_url": "https://finance.yahoo.com/quote/GC=F"
   },
   {
    "key": "btc",
    "label": "BTC",
    "series": "BTC",
-   "value": 77508.9375,
+   "value": 78247.9921875,
    "unit": "$",
-   "change": -3.1218886866053674,
+   "change": -3.164511435214956,
    "change_unit": "%",
-   "as_of": "2026-11-01",
+   "as_of": "2026-11-02",
    "stale_days": 0,
    "source_url": "https://www.coingecko.com/en/coins/bitcoin"
   },
@@ -1587,11 +1587,11 @@
    "key": "btcgold",
    "label": "BTC/黄金 比价",
    "series": "BTC",
-   "value": 19.87969412946636,
+   "value": 20.051249012307757,
    "unit": "",
-   "change": -2.0733985485873685,
+   "change": -1.5387130960984208,
    "change_unit": "%",
-   "as_of": "2026-11-01",
+   "as_of": "2026-11-02",
    "stale_days": 0,
    "source_url": ""
   },
@@ -1604,7 +1604,7 @@
    "change": 50666.666666666664,
    "change_unit": "",
    "as_of": "2026-09-01",
-   "stale_days": 61,
+   "stale_days": 62,
    "source_url": "https://fred.stlouisfed.org/series/PAYEMS"
   },
   {
@@ -1616,7 +1616,7 @@
    "change": 0.0,
    "change_unit": "pp",
    "as_of": "2026-09-01",
-   "stale_days": 61,
+   "stale_days": 62,
    "source_url": "https://fred.stlouisfed.org/series/UNRATE"
   },
   {
@@ -1628,7 +1628,7 @@
    "change": -5000.0,
    "change_unit": "",
    "as_of": "2026-10-24",
-   "stale_days": 8,
+   "stale_days": 9,
    "source_url": "https://fred.stlouisfed.org/series/ICSA"
   },
   {
@@ -1640,7 +1640,7 @@
    "change": null,
    "change_unit": "",
    "as_of": "2026-10-29",
-   "stale_days": 3,
+   "stale_days": 4,
    "source_url": "https://fred.stlouisfed.org/series/DFEDTARU"
   },
   {
@@ -1652,7 +1652,7 @@
    "change": -4.1894522198535515,
    "change_unit": "%",
    "as_of": "2026-10-27",
-   "stale_days": 5,
+   "stale_days": 6,
    "source_url": "https://fred.stlouisfed.org/series/DCOILWTICO"
   },
   {
@@ -1661,21 +1661,21 @@
    "series": "WALCL",
    "value": 5.741533,
    "unit": "T$",
-   "change": -1.4373599955916139,
+   "change": -1.437766070581592,
    "change_unit": "%",
    "as_of": "2026-10-28",
-   "stale_days": 4,
+   "stale_days": 5,
    "source_url": "https://fred.stlouisfed.org/series/WALCL"
   },
   {
    "key": "btc_spot",
    "label": "BTC 实时",
    "series": "BTC",
-   "value": 77571.0,
+   "value": 78348.0,
    "unit": "$",
-   "change": 0.4911630007588313,
+   "change": 0.9590840834308312,
    "change_unit": "%",
-   "as_of": "2026-11-01T00:37:49+00:00",
+   "as_of": "2026-11-02T01:11:44+00:00",
    "stale_days": 0,
    "source_url": "https://www.coingecko.com/en/coins/bitcoin"
   }
